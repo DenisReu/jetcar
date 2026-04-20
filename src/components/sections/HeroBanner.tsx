@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -15,7 +15,7 @@ const slides = [
     ctaHref: '/collections/exclusive-lifestyle',
     image:
       'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=1600&q=85',
-    align: 'left' as const,
+    align: 'left',
   },
   {
     id: 2,
@@ -27,7 +27,7 @@ const slides = [
     ctaHref: '/collections/lego',
     image:
       'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1600&q=85',
-    align: 'right' as const,
+    align: 'right',
   },
   {
     id: 3,
@@ -39,22 +39,13 @@ const slides = [
     ctaHref: '/collections/champagne',
     image:
       'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?w=1600&q=85',
-    align: 'left' as const,
+    align: 'left',
   },
 ];
 
 export default function HeroBanner() {
   const [current, setCurrent] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
-
-  const goTo = useCallback((index: number) => {
-    if (index === current || transitioning) return;
-    setTransitioning(true);
-    setTimeout(() => {
-      setCurrent(index);
-      setTransitioning(false);
-    }, 400);
-  }, [current, transitioning]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -63,17 +54,26 @@ export default function HeroBanner() {
         setCurrent((prev) => (prev + 1) % slides.length);
         setTransitioning(false);
       }, 400);
-    }, 7000);
+    }, 6000);
     return () => clearInterval(interval);
   }, []);
+
+  const goTo = (index: number) => {
+    if (index === current) return;
+    setTransitioning(true);
+    setTimeout(() => {
+      setCurrent(index);
+      setTransitioning(false);
+    }, 300);
+  };
 
   const slide = slides[current];
 
   return (
-    <section className="relative w-full h-[94vh] min-h-[600px] max-h-[900px] overflow-hidden bg-[#020203]">
+    <section className="relative w-full h-[92vh] min-h-[580px] max-h-[860px] overflow-hidden bg-black">
       {/* Background image */}
       <div
-        className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+        className={`absolute inset-0 transition-opacity duration-500 ${
           transitioning ? 'opacity-0' : 'opacity-100'
         }`}
       >
@@ -83,41 +83,38 @@ export default function HeroBanner() {
           fill
           priority
           sizes="100vw"
-          className="object-cover scale-105"
+          className="object-cover"
         />
-        {/* Cinematic overlays */}
-        <div className="absolute inset-0 img-overlay-left" />
-        <div className="absolute inset-0 img-overlay-bottom" />
-        {/* Film grain texture */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\' opacity=\'1\'/%3E%3C/svg%3E")' }} />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
       </div>
 
       {/* Content */}
-      <div className="relative h-full max-w-[1440px] mx-auto px-6 lg:px-16 flex items-end pb-24">
+      <div className="relative h-full max-w-[1440px] mx-auto px-6 lg:px-16 flex items-end pb-20">
         <div
-          className={`max-w-xl transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            transitioning ? 'opacity-0 translate-y-6' : 'opacity-100 translate-y-0'
+          className={`max-w-xl transition-all duration-500 ${
+            transitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
           } ${slide.align === 'right' ? 'ml-auto text-right' : ''}`}
         >
-          <p className="text-[#c8a55a] text-[10px] tracking-[0.4em] uppercase mb-5 font-[Montserrat] font-medium">
+          <p className="text-[#c9a84c] text-[11px] tracking-[0.3em] uppercase mb-4">
             {slide.eyebrow}
           </p>
-          <h1 className="text-white text-5xl md:text-6xl lg:text-[80px] font-light tracking-[-0.02em] leading-[0.95] mb-7 whitespace-pre-line font-[Cormorant]">
+          <h1 className="text-white text-5xl md:text-6xl lg:text-7xl font-light tracking-tight leading-none mb-6 whitespace-pre-line">
             {slide.title}
           </h1>
-          <p className="text-[#9a9a9a] text-[13px] md:text-[14px] leading-[1.8] tracking-wide mb-10 max-w-md font-[Montserrat] font-light">
+          <p className="text-[#b0b0b0] text-sm md:text-base leading-relaxed tracking-wide mb-8 max-w-sm">
             {slide.subtitle}
           </p>
-          <div className={`flex items-center gap-4 flex-wrap ${slide.align === 'right' ? 'justify-end' : ''}`}>
+          <div className="flex items-center gap-4 flex-wrap">
             <Link
               href={slide.ctaHref}
-              className="btn-luxury bg-[#c8a55a] hover:bg-[#dfc07a] text-[#020203] text-[10px] tracking-[0.25em] uppercase font-semibold px-10 py-4.5 inline-block font-[Montserrat]"
+              className="bg-[#c9a84c] hover:bg-[#e2c97e] text-black text-[11px] tracking-[0.2em] uppercase font-bold px-9 py-4 transition-colors inline-block"
             >
               {slide.cta}
             </Link>
             <Link
               href="/products"
-              className="text-white/70 border border-white/15 hover:border-white/40 hover:text-white text-[10px] tracking-[0.25em] uppercase px-10 py-4.5 transition-all duration-300 inline-block font-[Montserrat] font-medium"
+              className="text-white border border-white/40 hover:border-white text-[11px] tracking-[0.2em] uppercase px-9 py-4 transition-colors inline-block"
             >
               All Products
             </Link>
@@ -126,15 +123,15 @@ export default function HeroBanner() {
       </div>
 
       {/* Slide indicators */}
-      <div className="absolute bottom-10 right-10 flex items-center gap-3">
+      <div className="absolute bottom-8 right-8 flex items-center gap-3">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
-            className={`transition-all duration-500 cursor-pointer ${
+            className={`transition-all duration-300 ${
               i === current
-                ? 'w-10 h-[2px] bg-[#c8a55a]'
-                : 'w-3 h-[2px] bg-white/20 hover:bg-white/40'
+                ? 'w-8 h-[3px] bg-[#c9a84c]'
+                : 'w-3 h-[3px] bg-white/30 hover:bg-white/60'
             }`}
             aria-label={`Slide ${i + 1}`}
           />
@@ -142,23 +139,20 @@ export default function HeroBanner() {
       </div>
 
       {/* Slide counter */}
-      <div className="absolute bottom-10 left-6 lg:left-16 flex items-center gap-4">
-        <span className="text-[#c8a55a] text-[13px] font-light font-[Montserrat]">
+      <div className="absolute bottom-8 left-6 lg:left-16 flex items-center gap-3">
+        <span className="text-[#c9a84c] text-sm font-medium">
           {String(current + 1).padStart(2, '0')}
         </span>
-        <span className="w-20 h-[1px] bg-[#2a2a2a] relative overflow-hidden">
+        <span className="w-16 h-[1px] bg-[#333]">
           <span
-            className="block h-full bg-gradient-to-r from-[#c8a55a] to-[#c8a55a]/40 transition-all duration-700"
+            className="block h-full bg-[#c9a84c] transition-all duration-300"
             style={{ width: `${((current + 1) / slides.length) * 100}%` }}
           />
         </span>
-        <span className="text-[#4a4a4a] text-[13px] font-light font-[Montserrat]">
+        <span className="text-[#555] text-sm">
           {String(slides.length).padStart(2, '0')}
         </span>
       </div>
-
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#020203] to-transparent pointer-events-none" />
     </section>
   );
 }

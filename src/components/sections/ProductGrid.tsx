@@ -24,30 +24,30 @@ export default function ProductGrid({
   };
 
   return (
-    <section className="max-w-[1440px] mx-auto px-6 lg:px-12 py-20">
+    <section className="max-w-[1440px] mx-auto px-6 lg:px-10 py-16">
       {/* Header */}
-      <div className="flex items-end justify-between mb-12">
+      <div className="flex items-end justify-between mb-10">
         <div>
-          <h2 className="text-white text-3xl md:text-4xl lg:text-[40px] tracking-[-0.01em] font-light mb-2 font-[Cormorant]">
+          <h2 className="text-white text-2xl md:text-3xl tracking-[0.08em] uppercase font-light mb-2">
             {title}
           </h2>
           {subtitle && (
-            <p className="text-[#6b6b6b] text-[12px] tracking-[0.08em] font-[Montserrat] font-light">{subtitle}</p>
+            <p className="text-[#666] text-sm tracking-wide">{subtitle}</p>
           )}
         </div>
         {viewAllHref && (
           <Link
             href={viewAllHref}
-            className="text-[#c8a55a] hover:text-[#dfc07a] text-[10px] tracking-[0.25em] uppercase font-medium transition-colors duration-300 hidden sm:flex items-center gap-2.5 font-[Montserrat]"
+            className="text-[#c9a84c] hover:text-[#e2c97e] text-[11px] tracking-[0.2em] uppercase font-medium transition-colors hidden sm:flex items-center gap-2"
           >
             View All
             <svg
-              width="12"
-              height="12"
+              width="13"
+              height="13"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="2"
             >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
@@ -56,7 +56,7 @@ export default function ProductGrid({
       </div>
 
       {/* Grid */}
-      <div className={`grid ${colMap[columns]} gap-5 lg:gap-7`}>
+      <div className={`grid ${colMap[columns]} gap-6 lg:gap-8`}>
         {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
@@ -64,19 +64,19 @@ export default function ProductGrid({
 
       {/* Mobile view all */}
       {viewAllHref && (
-        <div className="mt-12 text-center sm:hidden">
+        <div className="mt-10 text-center sm:hidden">
           <Link
             href={viewAllHref}
-            className="inline-flex items-center gap-2.5 text-[#c8a55a] hover:text-[#dfc07a] text-[10px] tracking-[0.25em] uppercase font-medium transition-colors duration-300 font-[Montserrat]"
+            className="inline-flex items-center gap-2 text-[#c9a84c] hover:text-[#e2c97e] text-[11px] tracking-[0.2em] uppercase font-medium transition-colors"
           >
             View All Products
             <svg
-              width="12"
-              height="12"
+              width="13"
+              height="13"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
+              strokeWidth="2"
             >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>

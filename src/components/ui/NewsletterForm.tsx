@@ -13,25 +13,45 @@ export default function NewsletterForm() {
 
   if (subscribed) {
     return (
-      <p className="text-[#c8a55a] text-[12px] tracking-wide font-[Montserrat] font-light">
-        ✓ You&apos;re subscribed! Check your inbox for your 10% discount code.
+      <p className="text-white text-sm tracking-wide">
+        ✓ You&apos;re subscribed!
       </p>
     );
   }
 
   return (
-    <form className="flex gap-0 w-full max-w-md" onSubmit={handleSubmit}>
+    <form className="flex w-full max-w-md" onSubmit={handleSubmit}>
       <input
         type="email"
         placeholder="Your email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="flex-1 bg-[#0a0a0a] border border-[#1f1f1f] border-r-0 px-5 py-3.5 text-[12px] text-white outline-none placeholder:text-[#3a3a3a] focus:border-[#c8a55a]/50 transition-colors duration-300 font-[Montserrat] font-light tracking-wide"
+        className="flex-1 px-5 py-3 text-sm text-white outline-none transition-colors"
+        style={{
+          background: 'rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.3)',
+          borderRight: 0,
+          color: '#ffffff',
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.borderColor = '#ffffff';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+        }}
       />
       <button
         type="submit"
-        className="bg-[#c8a55a] hover:bg-[#dfc07a] text-[#020203] text-[10px] tracking-[0.2em] uppercase font-semibold px-7 py-3.5 transition-colors duration-300 whitespace-nowrap cursor-pointer font-[Montserrat]"
+        className="whitespace-nowrap font-semibold transition-colors"
+        style={{
+          background: '#ffffff',
+          color: '#004BFA',
+          textTransform: 'uppercase',
+          letterSpacing: '0.15em',
+          fontSize: '0.75rem',
+          padding: '0.75rem 1.5rem',
+        }}
       >
         Subscribe
       </button>

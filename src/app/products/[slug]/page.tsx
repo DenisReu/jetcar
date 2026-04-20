@@ -44,30 +44,30 @@ export default function ProductPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen bg-[#020203]">
+    <div className="min-h-screen">
       {/* Breadcrumb */}
-      <div className="border-b border-[#1f1f1f]/60 bg-[#050506] py-4 px-6 lg:px-12">
-        <div className="max-w-[1440px] mx-auto flex items-center gap-2.5 text-[11px] text-[#4a4a4a] tracking-wide font-[Montserrat] font-light">
-          <Link href="/" className="hover:text-[#8a8a8a] transition-colors duration-200">Home</Link>
-          <span className="text-[#2a2a2a]">/</span>
-          <Link href="/products" className="hover:text-[#8a8a8a] transition-colors duration-200">Products</Link>
-          <span className="text-[#2a2a2a]">/</span>
+      <div className="border-b border-[#1a1a1a] bg-[#0d0d0d] py-4 px-6 lg:px-10">
+        <div className="max-w-[1440px] mx-auto flex items-center gap-2 text-xs text-[#555] tracking-wide">
+          <Link href="/" className="hover:text-[#a0a0a0] transition-colors">Home</Link>
+          <span>/</span>
+          <Link href="/products" className="hover:text-[#a0a0a0] transition-colors">Products</Link>
+          <span>/</span>
           <Link
             href={`/collections/${product.category}`}
-            className="hover:text-[#8a8a8a] transition-colors duration-200 capitalize"
+            className="hover:text-[#a0a0a0] transition-colors capitalize"
           >
             {product.category.replace('-', ' ')}
           </Link>
-          <span className="text-[#2a2a2a]">/</span>
-          <span className="text-[#8a8a8a]">{product.name}</span>
+          <span>/</span>
+          <span className="text-[#a0a0a0]">{product.name}</span>
         </div>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-12 py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 xl:gap-24">
+      <div className="max-w-[1440px] mx-auto px-6 lg:px-10 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20">
           {/* Images */}
           <div className="space-y-4">
-            <div className="relative aspect-square overflow-hidden bg-[#0a0a0a]">
+            <div className="relative aspect-square overflow-hidden bg-[#111]">
               <Image
                 src={product.images[selectedImage]}
                 alt={product.name}
@@ -77,12 +77,12 @@ export default function ProductPage({ params }: Props) {
                 priority
               />
               {product.isNew && (
-                <span className="absolute top-4 left-4 bg-white/95 text-[#020203] text-[9px] tracking-[0.18em] uppercase font-semibold px-3 py-1.5 font-[Montserrat]">
+                <span className="absolute top-4 left-4 bg-white text-black text-[10px] tracking-[0.15em] uppercase font-bold px-3 py-1">
                   New
                 </span>
               )}
               {discount && (
-                <span className="absolute top-4 right-4 bg-[#c8a55a] text-[#020203] text-[10px] tracking-[0.12em] uppercase font-semibold px-3 py-1.5 font-[Montserrat]">
+                <span className="absolute top-4 right-4 bg-[#c9a84c] text-black text-[11px] tracking-[0.1em] uppercase font-bold px-3 py-1">
                   Save {discount}%
                 </span>
               )}
@@ -93,10 +93,10 @@ export default function ProductPage({ params }: Props) {
                   <button
                     key={i}
                     onClick={() => setSelectedImage(i)}
-                    className={`relative aspect-square overflow-hidden bg-[#0a0a0a] border transition-colors duration-300 cursor-pointer ${
+                    className={`relative aspect-square overflow-hidden bg-[#111] border-2 transition-colors ${
                       selectedImage === i
-                        ? 'border-[#c8a55a]/60'
-                        : 'border-[#1f1f1f] hover:border-[#2a2a2a]'
+                        ? 'border-[#c9a84c]'
+                        : 'border-transparent hover:border-[#333]'
                     }`}
                   >
                     <Image
@@ -113,26 +113,26 @@ export default function ProductPage({ params }: Props) {
           </div>
 
           {/* Details */}
-          <div className="lg:pt-6">
-            <p className="text-[10px] text-[#c8a55a] tracking-[0.3em] uppercase mb-4 font-[Montserrat] font-medium">
+          <div className="lg:pt-4">
+            <p className="text-[11px] text-[#c9a84c] tracking-[0.25em] uppercase mb-3">
               {product.vendor}
             </p>
-            <h1 className="text-white text-3xl md:text-4xl lg:text-[42px] font-light tracking-[-0.01em] leading-[1.15] mb-6 font-[Cormorant]">
+            <h1 className="text-white text-3xl md:text-4xl font-light tracking-tight leading-tight mb-5">
               {product.name}
             </h1>
 
             {/* Price */}
-            <div className="flex items-center gap-4 mb-10">
-              <span className="text-white text-2xl font-light tracking-wide font-[Cormorant]">
+            <div className="flex items-center gap-4 mb-8">
+              <span className="text-white text-2xl font-medium tracking-wide">
                 {formatPrice(product.price, product.currency)}
               </span>
               {product.originalPrice && (
-                <span className="text-[#4a4a4a] text-lg line-through tracking-wide font-[Cormorant]">
+                <span className="text-[#555] text-lg line-through tracking-wide">
                   {formatPrice(product.originalPrice, product.currency)}
                 </span>
               )}
               {discount && (
-                <span className="text-[#c8a55a] text-[11px] font-medium font-[Montserrat] tracking-wide">
+                <span className="text-[#c9a84c] text-sm font-medium">
                   Save {discount}%
                 </span>
               )}
@@ -140,8 +140,8 @@ export default function ProductPage({ params }: Props) {
 
             {/* Variants */}
             {product.variants && product.variants.length > 0 && (
-              <div className="mb-10">
-                <p className="text-[10px] text-[#6b6b6b] tracking-[0.25em] uppercase mb-3 font-[Montserrat]">
+              <div className="mb-8">
+                <p className="text-[11px] text-[#666] tracking-[0.2em] uppercase mb-3">
                   {product.variants[0].name}:{' '}
                   <span className="text-white">{selectedVariant}</span>
                 </p>
@@ -151,12 +151,12 @@ export default function ProductPage({ params }: Props) {
                       key={v.id}
                       onClick={() => setSelectedVariant(v.value)}
                       disabled={!v.inStock}
-                      className={`px-5 py-2.5 text-[12px] tracking-wide border transition-all duration-300 cursor-pointer font-[Montserrat] font-light ${
+                      className={`px-4 py-2 text-sm tracking-wide border transition-colors ${
                         selectedVariant === v.value
-                          ? 'border-[#c8a55a]/60 bg-[#c8a55a]/8 text-white'
+                          ? 'border-[#c9a84c] bg-[#c9a84c]/10 text-white'
                           : v.inStock
-                          ? 'border-[#1f1f1f] text-[#8a8a8a] hover:border-[#2a2a2a]'
-                          : 'border-[#1f1f1f]/50 text-[#2a2a2a] cursor-not-allowed line-through'
+                          ? 'border-[#2a2a2a] text-[#a0a0a0] hover:border-[#444]'
+                          : 'border-[#1a1a1a] text-[#333] cursor-not-allowed line-through'
                       }`}
                     >
                       {v.value}
@@ -167,27 +167,27 @@ export default function ProductPage({ params }: Props) {
             )}
 
             {/* Quantity */}
-            <div className="mb-10">
-              <p className="text-[10px] text-[#6b6b6b] tracking-[0.25em] uppercase mb-3 font-[Montserrat]">
+            <div className="mb-8">
+              <p className="text-[11px] text-[#666] tracking-[0.2em] uppercase mb-3">
                 Quantity
               </p>
-              <div className="flex items-center gap-0 w-fit border border-[#1f1f1f]">
+              <div className="flex items-center gap-0 w-fit border border-[#2a2a2a]">
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="w-12 h-12 flex items-center justify-center text-[#6b6b6b] hover:text-white hover:bg-[#0f0f0f] transition-colors duration-200 cursor-pointer"
+                  className="w-11 h-11 flex items-center justify-center text-[#a0a0a0] hover:text-white hover:bg-[#161616] transition-colors"
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M5 12h14" />
                   </svg>
                 </button>
-                <span className="w-14 h-12 flex items-center justify-center text-white text-[13px] border-x border-[#1f1f1f] font-[Montserrat] font-light">
+                <span className="w-12 h-11 flex items-center justify-center text-white text-sm border-x border-[#2a2a2a]">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity((q) => q + 1)}
-                  className="w-12 h-12 flex items-center justify-center text-[#6b6b6b] hover:text-white hover:bg-[#0f0f0f] transition-colors duration-200 cursor-pointer"
+                  className="w-11 h-11 flex items-center justify-center text-[#a0a0a0] hover:text-white hover:bg-[#161616] transition-colors"
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M12 5v14M5 12h14" />
                   </svg>
                 </button>
@@ -195,11 +195,11 @@ export default function ProductPage({ params }: Props) {
             </div>
 
             {/* Add to cart */}
-            <div className="flex gap-4 mb-12">
+            <div className="flex gap-4 mb-10">
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className="flex-1 btn-luxury bg-[#c8a55a] hover:bg-[#dfc07a] disabled:bg-[#1f1f1f] disabled:text-[#4a4a4a] text-[#020203] text-[10px] tracking-[0.25em] uppercase font-semibold py-4.5 transition-colors duration-300 cursor-pointer font-[Montserrat]"
+                className="flex-1 bg-[#c9a84c] hover:bg-[#e2c97e] disabled:bg-[#222] disabled:text-[#555] text-black text-[11px] tracking-[0.2em] uppercase font-bold py-4 transition-colors"
               >
                 {added
                   ? '✓ Added to Cart'
@@ -209,10 +209,10 @@ export default function ProductPage({ params }: Props) {
               </button>
               <Link
                 href="/cart"
-                className="border border-[#1f1f1f] hover:border-[#2a2a2a] text-[#6b6b6b] hover:text-white px-5 flex items-center justify-center transition-colors duration-300"
+                className="border border-[#2a2a2a] hover:border-[#555] text-[#a0a0a0] hover:text-white px-5 flex items-center justify-center transition-colors"
                 aria-label="View cart"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                   <line x1="3" y1="6" x2="21" y2="6" />
                   <path d="M16 10a4 4 0 01-8 0" />
@@ -221,17 +221,17 @@ export default function ProductPage({ params }: Props) {
             </div>
 
             {/* Description */}
-            <div className="border-t border-[#1f1f1f]/60 pt-10">
-              <h3 className="text-[#8a8a8a] text-[10px] tracking-[0.25em] uppercase mb-5 font-[Montserrat] font-medium">
+            <div className="border-t border-[#1a1a1a] pt-8">
+              <h3 className="text-white text-[11px] tracking-[0.2em] uppercase mb-4">
                 Product Details
               </h3>
-              <p className="text-[#6b6b6b] text-[13px] leading-[1.9] tracking-wide font-[Montserrat] font-light">
+              <p className="text-[#a0a0a0] text-sm leading-relaxed tracking-wide">
                 {product.description}
               </p>
             </div>
 
             {/* Meta */}
-            <div className="mt-10 space-y-4 border-t border-[#1f1f1f]/60 pt-10">
+            <div className="mt-8 space-y-3 border-t border-[#1a1a1a] pt-8">
               {[
                 { label: 'Category', value: product.category.replace('-', ' ') },
                 { label: 'Vendor', value: product.vendor },
@@ -241,13 +241,13 @@ export default function ProductPage({ params }: Props) {
                   gold: product.inStock,
                 },
               ].map((item) => (
-                <div key={item.label} className="flex items-center gap-5">
-                  <span className="text-[10px] text-[#4a4a4a] tracking-[0.2em] uppercase w-28 font-[Montserrat]">
+                <div key={item.label} className="flex items-center gap-4">
+                  <span className="text-[11px] text-[#555] tracking-[0.15em] uppercase w-24">
                     {item.label}
                   </span>
                   <span
-                    className={`text-[13px] tracking-wide capitalize font-[Montserrat] font-light ${
-                      item.gold ? 'text-[#c8a55a]' : 'text-[#8a8a8a]'
+                    className={`text-sm tracking-wide capitalize ${
+                      item.gold ? 'text-[#c9a84c]' : 'text-[#a0a0a0]'
                     }`}
                   >
                     {item.value}
@@ -257,11 +257,11 @@ export default function ProductPage({ params }: Props) {
             </div>
 
             {/* Shipping note */}
-            <div className="mt-10 p-5 glass-card flex items-start gap-4">
+            <div className="mt-8 p-4 bg-[#0d0d0d] border border-[#1a1a1a] flex items-start gap-3">
               <svg
                 width="16"
                 height="16"
-                className="text-[#c8a55a]/70 shrink-0 mt-0.5"
+                className="text-[#c9a84c] shrink-0 mt-0.5"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -269,7 +269,7 @@ export default function ProductPage({ params }: Props) {
               >
                 <path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8" />
               </svg>
-              <p className="text-[#4a4a4a] text-[11px] leading-[1.7] tracking-wide font-[Montserrat] font-light">
+              <p className="text-[#666] text-xs leading-relaxed tracking-wide">
                 Free delivery on orders over £150 / €150. Orders dispatched within
                 1–3 business days.
               </p>
@@ -279,23 +279,22 @@ export default function ProductPage({ params }: Props) {
 
         {/* Related products */}
         {related.length > 0 && (
-          <div className="mt-28">
-            <div className="section-divider mb-20" />
-            <div className="flex items-end justify-between mb-12">
-              <h2 className="text-white text-3xl md:text-4xl font-light tracking-[-0.01em] font-[Cormorant]">
+          <div className="mt-24">
+            <div className="flex items-end justify-between mb-10">
+              <h2 className="text-white text-2xl tracking-[0.08em] uppercase font-light">
                 You May Also Like
               </h2>
               <Link
                 href={`/collections/${product.category}`}
-                className="text-[#c8a55a] hover:text-[#dfc07a] text-[10px] tracking-[0.25em] uppercase font-medium transition-colors duration-300 hidden sm:flex items-center gap-2.5 font-[Montserrat]"
+                className="text-[#c9a84c] hover:text-[#e2c97e] text-[11px] tracking-[0.2em] uppercase font-medium transition-colors hidden sm:flex items-center gap-2"
               >
                 View Collection
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </Link>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-7">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {related.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

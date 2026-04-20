@@ -1,62 +1,138 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600;700&display=swap');
+
+/* ─── Bugatti Store — Design Tokens ─────────────────────────────────── */
 
 :root {
-  --bg-deep: #020203;
-  --bg-base: #050506;
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #0f0f0f;
-  --bg-elevated: #141414;
-  --bg-card: #181818;
-  --bg-card-hover: #1c1c1c;
-  --text-primary: #f5f5f5;
-  --text-secondary: #a8a8a8;
-  --text-muted: #6b6b6b;
-  --text-subtle: #4a4a4a;
-  --accent-gold: #c8a55a;
-  --accent-gold-light: #dfc07a;
-  --accent-gold-dim: #a08040;
-  --border: #1f1f1f;
-  --border-light: #2a2a2a;
-  --border-hover: #3a3a3a;
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.06);
-  --glass-highlight: rgba(255, 255, 255, 0.08);
-  --shadow-ambient: rgba(0, 0, 0, 0.5);
-  --shadow-gold: rgba(200, 165, 90, 0.08);
-  --gradient-hero: linear-gradient(135deg, #0a0a0a 0%, #0f0f10 50%, #0a0a0c 100%);
+  /* Base palette (matches Shopify theme CSS custom properties) */
+  --color-bg: rgb(0 0 0);
+  --color-fg: rgb(255 255 255);
+  --color-highlight: rgb(0 75 250);          /* #004BFA – blue accent */
+  --color-btn-bg: rgb(255 255 255);
+  --color-btn-text: rgb(0 0 0);
+
+  /* Header (white bg, dark text) */
+  --color-header-bg: rgb(255 255 255);
+  --color-header-fg: rgb(23 23 23);
+
+  /* Topbar / announcement */
+  --color-topbar-bg: rgb(31 31 31);
+  --color-topbar-fg: rgb(250 250 250);
+
+  /* Footer */
+  --color-footer-bg: rgb(31 31 31);
+  --color-footer-border: rgb(50 50 50);
+  --color-copyright-bg: rgb(23 23 23);
+
+  /* Price colours */
+  --color-price: rgb(0 75 250);
+  --color-sale: rgb(225 29 72);
+
+  /* Borders */
+  --color-border: rgba(255 255 255 / 0.1);
+  --color-border-dark: rgba(255 255 255 / 0.4);
+  --color-border-light: rgba(255 255 255 / 0.06);
+
+  /* Muted text */
+  --color-muted: rgb(160 160 160);
+  --color-placeholder: rgb(225 225 225);
+
+  /* Spacing scale (mirrors --sp-* from Shopify theme) */
+  --sp-1: 0.25rem;
+  --sp-1d5: 0.375rem;
+  --sp-2: 0.5rem;
+  --sp-2d5: 0.625rem;
+  --sp-3: 0.75rem;
+  --sp-3d5: 0.875rem;
+  --sp-4: 1rem;
+  --sp-4d5: 1.125rem;
+  --sp-5: 1.25rem;
+  --sp-5d5: 1.375rem;
+  --sp-6: 1.5rem;
+  --sp-6d5: 1.625rem;
+  --sp-7: 1.75rem;
+  --sp-7d5: 1.875rem;
+  --sp-8: 2rem;
+  --sp-8d5: 2.125rem;
+  --sp-9: 2.25rem;
+  --sp-9d5: 2.375rem;
+  --sp-10: 2.5rem;
+  --sp-11: 2.75rem;
+  --sp-12: 3rem;
+  --sp-13: 3.25rem;
+  --sp-14: 3.5rem;
+  --sp-15: 3.875rem;
+  --sp-16: 4rem;
+  --sp-18: 4.5rem;
+  --sp-20: 5rem;
+  --sp-23: 5.625rem;
+  --sp-24: 6rem;
+  --sp-28: 7rem;
+  --sp-32: 8rem;
+  --sp-36: 9rem;
+  --sp-40: 10rem;
+
+  /* Animation curves (from theme) */
+  --anim-primary: 0.5s cubic-bezier(0.3, 1, 0.3, 1);
+  --anim-smooth: 0.7s cubic-bezier(0.7, 0, 0.3, 1);
+  --anim-fast: 0.3s cubic-bezier(0.7, 0, 0.3, 1);
+  --anim-short: 0.2s cubic-bezier(0.7, 0, 0.3, 1);
+  --anim-nav: 0.5s cubic-bezier(0.6, 0, 0.4, 1);
+
+  /* Topbar height */
+  --topbar-height: 3rem;   /* var(--sp-12) */
 }
+
+@media (min-width: 1536px) {
+  :root { --topbar-height: 3.5rem; }
+}
+
+/* ─── Tailwind theme tokens ──────────────────────────────────────────── */
 
 @theme inline {
-  --color-background: var(--bg-primary);
-  --color-foreground: var(--text-primary);
-  --font-heading: 'Cormorant', serif;
-  --font-body: 'Montserrat', sans-serif;
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-fg);
 }
 
-* {
+/* ─── Local fonts ────────────────────────────────────────────────────── */
+
+@font-face {
+  font-family: 'BugattiText';
+  src: url('/fonts/BUGATTIText-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BugattiText';
+  src: url('/fonts/BUGATTIText-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Base reset ─────────────────────────────────────────────────────── */
+
+*, *::before, *::after {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 html, body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: var(--bg-deep);
-  color: var(--text-primary);
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 300;
-  letter-spacing: 0.02em;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Cormorant', serif;
 }
 
 a {
@@ -64,132 +140,102 @@ a {
   text-decoration: none;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg-deep); }
-::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--accent-gold); }
+/* ─── Scrollbar ──────────────────────────────────────────────────────── */
 
-/* Animations */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #004BFA; }
+
+/* ─── Keyframes ──────────────────────────────────────────────────────── */
+
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Utility classes ────────────────────────────────────────────────── */
+
 .marquee-track {
   animation: marquee 40s linear infinite;
   display: flex;
   white-space: nowrap;
 }
-.marquee-track:hover {
-  animation-play-state: paused;
-}
 
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
 .fade-in-up {
-  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fadeInUp var(--anim-primary) forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.fade-in {
-  animation: fadeIn 0.6s ease forwards;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-.shimmer {
-  background: linear-gradient(90deg, transparent 25%, var(--glass-highlight) 50%, transparent 75%);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-@keyframes pulse-gold {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-/* Product card interactions */
 .product-card-img {
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform var(--anim-smooth);
 }
 .product-card:hover .product-card-img {
-  transform: scale(1.08);
+  transform: scale(1.07);
 }
 
-/* Glass card effect */
-.glass-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-.glass-card:hover {
-  background: var(--glass-highlight);
-  border-color: var(--border-hover);
-}
-
-/* Button transitions */
-.btn-luxury {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
-}
-.btn-luxury::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.btn-luxury:hover::after {
-  opacity: 1;
+/* Bugatti button base */
+.btn-bugatti {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1.5px solid currentColor;
+  transition: background-color var(--anim-fast), color var(--anim-fast), border-color var(--anim-fast);
+  cursor: pointer;
+  white-space: nowrap;
 }
 
-/* Section divider */
-.section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border-light), transparent);
+.btn-bugatti-white {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+.btn-bugatti-white:hover {
+  background: transparent;
+  color: #ffffff;
 }
 
-/* Gold text gradient */
-.text-gold-gradient {
-  background: linear-gradient(135deg, var(--accent-gold-light), var(--accent-gold), var(--accent-gold-dim));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.btn-bugatti-outline {
+  background: transparent;
+  color: #ffffff;
+  border-color: rgba(255,255,255,0.4);
+}
+.btn-bugatti-outline:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
 }
 
-/* Ambient glow */
-.glow-gold {
-  box-shadow: 0 0 40px var(--shadow-gold), 0 0 80px rgba(200, 165, 90, 0.04);
-}
+/* Footer hover styles (server component can't use event handlers) */
+.footer-social-icon:hover { color: #ffffff !important; }
+.footer-link:hover { color: rgba(255,255,255,0.85) !important; }
 
-/* Image overlay gradient */
-.img-overlay-left {
-  background: linear-gradient(to right, rgba(2,2,3,0.9) 0%, rgba(2,2,3,0.6) 40%, rgba(2,2,3,0.2) 70%, transparent 100%);
+.btn-bugatti-blue {
+  background: rgb(0 75 250);
+  color: #ffffff;
+  border-color: rgb(0 75 250);
 }
-.img-overlay-bottom {
-  background: linear-gradient(to top, rgba(2,2,3,0.85) 0%, rgba(2,2,3,0.4) 40%, transparent 70%);
-}
-.img-overlay-full {
-  background: linear-gradient(135deg, rgba(2,2,3,0.85) 0%, rgba(2,2,3,0.5) 50%, rgba(2,2,3,0.3) 100%);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track { animation: none; }
-  .fade-in-up { animation: none; opacity: 1; transform: none; }
-  .product-card-img { transition: none; }
+.btn-bugatti-blue:hover {
+  background: rgb(0 60 200);
+  border-color: rgb(0 60 200);
 }

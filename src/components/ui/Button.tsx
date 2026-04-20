@@ -14,19 +14,19 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const base =
-    'inline-flex items-center justify-center font-medium tracking-[0.2em] uppercase transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed font-[Montserrat] relative overflow-hidden';
+    'inline-flex items-center justify-center font-medium tracking-[0.18em] uppercase transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
 
   const variants = {
-    primary: 'bg-[#c8a55a] hover:bg-[#dfc07a] text-[#020203] font-semibold',
-    secondary: 'bg-white/95 hover:bg-white text-[#020203]',
-    outline: 'border border-[#c8a55a]/50 text-[#c8a55a] hover:bg-[#c8a55a]/10 hover:border-[#c8a55a]',
-    ghost: 'text-[#8a8a8a] hover:text-white',
+    primary: 'bg-[#c9a84c] hover:bg-[#e2c97e] text-black',
+    secondary: 'bg-white hover:bg-[#e0e0e0] text-black',
+    outline: 'border border-[#c9a84c] text-[#c9a84c] hover:bg-[#c9a84c] hover:text-black',
+    ghost: 'text-[#a0a0a0] hover:text-white',
   };
 
   const sizes = {
-    sm: 'text-[9px] px-5 py-2.5',
-    md: 'text-[10px] px-8 py-4',
-    lg: 'text-[11px] px-11 py-4.5',
+    sm: 'text-[10px] px-5 py-2.5',
+    md: 'text-[11px] px-7 py-3.5',
+    lg: 'text-[12px] px-10 py-4',
   };
 
   return (

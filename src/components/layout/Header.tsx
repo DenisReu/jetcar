@@ -3,18 +3,73 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
-import { navItems } from '@/data/products';
-import { NavItem } from '@/types';
+
+interface NavChild {
+  label: string;
+  href: string;
+}
+
+interface NavItem {
+  label: string;
+  href: string;
+  children?: NavChild[];
+}
+
+const navItems: NavItem[] = [
+  {
+    label: 'ALL PRODUCTS',
+    href: '/collections/all',
+  },
+  {
+    label: 'TECH',
+    href: '/collections/tech',
+    children: [
+      { label: 'HEADPHONES', href: '/collections/headphones' },
+      { label: 'ELECTRIC SCOOTERS', href: '/collections/electric-scooters' },
+    ],
+  },
+  {
+    label: 'MODEL CARS',
+    href: '/collections/model-cars',
+    children: [
+      { label: 'BOLIDE', href: '/collections/bolide' },
+      { label: 'DIVO', href: '/collections/divo' },
+      { label: 'CHIRON', href: '/collections/chiron' },
+      { label: 'MISTRAL', href: '/collections/mistral' },
+      { label: 'LEGO', href: '/collections/lego' },
+    ],
+  },
+  {
+    label: 'CLOTHING',
+    href: '/collections/clothing',
+    children: [
+      { label: 'HATS', href: '/collections/hats' },
+      { label: 'T-SHIRTS & POLOS', href: '/collections/t-shirts' },
+      { label: 'SWEATSHIRTS & HOODIES', href: '/collections/sweatshirts-hoodies' },
+      { label: 'OUTERWEAR', href: '/collections/outerwear' },
+      { label: 'KIDS', href: '/collections/kids' },
+      { label: 'BABY', href: '/collections/baby' },
+    ],
+  },
+];
 
 export default function Header() {
   const { count } = useCart();
+  const [scrolled, setScrolled] = useState(false);
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [scrolled, setScrolled] = useState(false);
-  const headerRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   const handleMouseEnter = (label: string) => {
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -22,116 +77,143 @@ export default function Header() {
   };
 
   const handleMouseLeave = () => {
-    timerRef.current = setTimeout(() => setActiveMenu(null), 150);
+    timerRef.current = setTimeout(() => setActiveMenu(null), 120);
   };
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, []);
+  const headerStyle: React.CSSProperties = {
+    position: 'sticky',
+    top: '3rem',
+    zIndex: 50,
+    backgroundColor: '#ffffff',
+    borderBottom: scrolled ? '1px solid rgba(23,23,23,0.08)' : '1px solid transparent',
+    boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.08)' : 'none',
+    transition: 'box-shadow 0.2s ease, border-color 0.2s ease',
+  };
 
   return (
     <>
-      <header
-        ref={headerRef}
-        className={`sticky top-0 z-50 transition-all duration-500 border-b ${
-          scrolled
-            ? 'bg-[#050506]/98 backdrop-blur-xl border-[#1f1f1f] shadow-[0_4px_30px_rgba(0,0,0,0.4)]'
-            : 'bg-[#050506]/90 backdrop-blur-sm border-[#1f1f1f]/50'
-        }`}
-      >
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-[72px]">
-            {/* Mobile menu toggle */}
-            <button
-              className="lg:hidden text-[#a8a8a8] hover:text-white p-2 transition-colors cursor-pointer"
-              onClick={() => setMobileOpen((v) => !v)}
-              aria-label="Toggle menu"
-            >
-              {mobileOpen ? (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M3 7h18M3 12h18M3 17h18" />
-                </svg>
-              )}
-            </button>
-
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-4 group">
-              <div className="relative">
-                <div className="w-10 h-10 rounded-full border border-[#c8a55a]/40 flex items-center justify-center group-hover:border-[#c8a55a] transition-colors duration-300">
-                  <span className="text-[#c8a55a] text-[11px] font-bold tracking-[0.15em] font-[Montserrat]">
-                    EB
-                  </span>
-                </div>
-                <div className="absolute inset-0 rounded-full bg-[#c8a55a]/5 group-hover:bg-[#c8a55a]/10 transition-colors duration-300" />
-              </div>
-              <div className="hidden sm:flex flex-col">
-                <span className="text-white text-[11px] tracking-[0.35em] font-light uppercase font-[Montserrat]">
-                  Bugatti
-                </span>
-                <span className="text-[#6b6b6b] text-[9px] tracking-[0.3em] uppercase font-[Montserrat]">
-                  Store
-                </span>
-              </div>
-            </Link>
-
-            {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-1">
-              {navItems.map((item) => (
-                <NavMenuItem
-                  key={item.label}
-                  item={item}
-                  isActive={activeMenu === item.label}
-                  onMouseEnter={() => handleMouseEnter(item.label)}
-                  onMouseLeave={handleMouseLeave}
-                />
-              ))}
-            </nav>
-
-            {/* Actions */}
-            <div className="flex items-center gap-5">
+      <header style={headerStyle}>
+        <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
+          <div
+            style={{ paddingTop: '1.5rem', paddingBottom: '1.5rem' }}
+            className="flex items-center justify-between"
+          >
+            {/* Left: search + hamburger (hamburger mobile only) */}
+            <div className="flex items-center gap-3">
+              {/* Search icon — always visible */}
               <button
-                onClick={() => setSearchOpen((v) => !v)}
-                className="text-[#6b6b6b] hover:text-[#c8a55a] transition-colors duration-300 cursor-pointer"
+                className="text-[#171717] hover:opacity-60 transition-opacity"
                 aria-label="Search"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <circle cx="11" cy="11" r="8" />
                   <path d="M21 21l-4.35-4.35" />
                 </svg>
               </button>
 
-              <Link
-                href="/account"
-                className="text-[#6b6b6b] hover:text-[#c8a55a] transition-colors duration-300 hidden sm:block"
-                aria-label="Account"
+              {/* Hamburger — mobile only */}
+              <button
+                className="lg:hidden text-[#171717] hover:opacity-60 transition-opacity"
+                onClick={() => setMobileOpen((v) => !v)}
+                aria-label="Toggle menu"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
+                <svg
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                >
+                  <path d="M3 6H21" />
+                  <path d="M3 12H11" />
+                  <path d="M3 18H16" />
                 </svg>
+              </button>
+            </div>
+
+            {/* Center: Logo + Desktop Nav */}
+            <div className="flex items-center gap-8">
+              {/* Logo */}
+              <Link href="/" className="flex items-center" aria-label="Bugatti Store home">
+                <img
+                  src="/images/logo-text-white.svg"
+                  alt="Bugatti"
+                  style={{
+                    filter: 'invert(1)',
+                    maxHeight: '21px',
+                  }}
+                  className="lg:hidden"
+                />
+                <img
+                  src="/images/logo-text-white.svg"
+                  alt="Bugatti"
+                  style={{
+                    filter: 'invert(1)',
+                    maxHeight: '41px',
+                  }}
+                  className="hidden lg:block"
+                />
               </Link>
 
+              {/* Desktop nav */}
+              <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+                {navItems.map((item) => (
+                  <DesktopNavItem
+                    key={item.label}
+                    item={item}
+                    isActive={activeMenu === item.label}
+                    onMouseEnter={() => handleMouseEnter(item.label)}
+                    onMouseLeave={handleMouseLeave}
+                    onClose={() => setActiveMenu(null)}
+                  />
+                ))}
+              </nav>
+            </div>
+
+            {/* Right: Cart */}
+            <div className="flex items-center">
               <Link
                 href="/cart"
-                className="relative text-[#6b6b6b] hover:text-[#c8a55a] transition-colors duration-300"
-                aria-label="Cart"
+                className="relative text-[#171717] hover:opacity-60 transition-opacity"
+                aria-label={`Cart${count > 0 ? `, ${count} items` : ''}`}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
                   <line x1="3" y1="6" x2="21" y2="6" />
                   <path d="M16 10a4 4 0 01-8 0" />
                 </svg>
                 {count > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-[#c8a55a] text-[#020203] text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center font-[Montserrat]">
+                  <span
+                    className="absolute -top-2 -right-2 flex items-center justify-center rounded-full text-white"
+                    style={{
+                      backgroundColor: '#171717',
+                      fontSize: '10px',
+                      fontWeight: 700,
+                      width: '16px',
+                      height: '16px',
+                      lineHeight: 1,
+                    }}
+                  >
                     {count}
                   </span>
                 )}
@@ -140,42 +222,41 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Mega menu */}
+        {/* Dropdown mega menu */}
         {activeMenu && (
           <div
-            className="absolute inset-x-0 top-full bg-[#0a0a0a]/98 backdrop-blur-xl border-b border-[#1f1f1f] shadow-[0_20px_60px_rgba(0,0,0,0.6)]"
+            style={{
+              borderTop: '1px solid rgba(23,23,23,0.08)',
+              backgroundColor: '#ffffff',
+            }}
             onMouseEnter={() => {
               if (timerRef.current) clearTimeout(timerRef.current);
             }}
             onMouseLeave={handleMouseLeave}
           >
-            <div className="max-w-[1440px] mx-auto px-12 py-10">
+            <div className="max-w-[1440px] mx-auto px-10 py-6">
               {navItems
                 .filter((item) => item.label === activeMenu && item.children)
                 .map((item) => (
-                  <div key={item.label} className="fade-in">
-                    <p className="text-[10px] text-[#c8a55a] tracking-[0.3em] uppercase mb-5 font-[Montserrat] font-medium">
-                      {item.label}
-                    </p>
-                    <div className="flex flex-wrap gap-x-12 gap-y-3">
-                      {item.children!.map((child) => (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          onClick={() => setActiveMenu(null)}
-                          className="text-[13px] text-[#8a8a8a] hover:text-white transition-colors duration-200 tracking-wide font-[Montserrat] font-light"
-                        >
-                          {child.label}
-                        </Link>
-                      ))}
+                  <div key={item.label} className="flex flex-wrap gap-x-8 gap-y-2">
+                    {item.children!.map((child) => (
                       <Link
-                        href={item.href}
+                        key={child.href}
+                        href={child.href}
                         onClick={() => setActiveMenu(null)}
-                        className="text-[13px] text-[#c8a55a] hover:text-[#dfc07a] transition-colors duration-200 tracking-wide font-[Montserrat] font-medium"
+                        style={{
+                          color: '#171717',
+                          fontSize: '13px',
+                          fontWeight: 500,
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                          textDecoration: 'none',
+                        }}
+                        className="hover:opacity-60 transition-opacity"
                       >
-                        View All →
+                        {child.label}
                       </Link>
-                    </div>
+                    ))}
                   </div>
                 ))}
             </div>
@@ -183,46 +264,13 @@ export default function Header() {
         )}
       </header>
 
-      {/* Search overlay */}
-      {searchOpen && (
-        <div className="fixed inset-0 z-[60] bg-[#020203]/90 backdrop-blur-xl flex items-start justify-center pt-40 px-4">
-          <div className="w-full max-w-2xl fade-in-up">
-            <p className="text-[10px] text-[#c8a55a] tracking-[0.3em] uppercase mb-6 font-[Montserrat]">
-              Search
-            </p>
-            <div className="flex items-center border-b border-[#2a2a2a] focus-within:border-[#c8a55a] transition-colors gap-4">
-              <svg width="18" height="18" className="text-[#6b6b6b] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="11" cy="11" r="8" />
-                <path d="M21 21l-4.35-4.35" />
-              </svg>
-              <input
-                autoFocus
-                type="text"
-                placeholder="What are you looking for?"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 bg-transparent text-white text-2xl py-5 outline-none placeholder:text-[#3a3a3a] tracking-wide font-[Cormorant] font-light"
-              />
-              <button
-                onClick={() => setSearchOpen(false)}
-                className="text-[#6b6b6b] hover:text-white transition-colors cursor-pointer"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <p className="text-[#4a4a4a] text-[11px] mt-5 tracking-[0.15em] font-[Montserrat] font-light">
-              Press Enter to search · Esc to close
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Mobile menu */}
+      {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-[55] bg-[#020203] pt-[72px] overflow-y-auto lg:hidden">
-          <nav className="px-6 py-10">
+        <div
+          className="fixed inset-0 z-40 bg-white overflow-y-auto lg:hidden"
+          style={{ top: 'calc(3rem + 72px)' }}
+        >
+          <nav className="px-6 py-4" aria-label="Mobile navigation">
             {navItems.map((item) => (
               <MobileNavItem
                 key={item.label}
@@ -237,16 +285,18 @@ export default function Header() {
   );
 }
 
-function NavMenuItem({
+function DesktopNavItem({
   item,
   isActive,
   onMouseEnter,
   onMouseLeave,
+  onClose,
 }: {
   item: NavItem;
   isActive: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  onClose: () => void;
 }) {
   return (
     <div
@@ -256,15 +306,22 @@ function NavMenuItem({
     >
       <Link
         href={item.href}
-        className={`text-[10px] tracking-[0.2em] uppercase font-medium px-4 py-2.5 transition-colors duration-300 block font-[Montserrat] ${
-          isActive ? 'text-[#c8a55a]' : 'text-[#8a8a8a] hover:text-white'
-        }`}
+        onClick={onClose}
+        style={{
+          color: '#171717',
+          fontSize: '13px',
+          fontWeight: 500,
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          padding: '0.5rem 0.75rem',
+          display: 'block',
+          opacity: isActive ? 0.6 : 1,
+          transition: 'opacity 0.15s ease',
+          whiteSpace: 'nowrap',
+        }}
       >
         {item.label}
       </Link>
-      {isActive && item.children && (
-        <div className="absolute bottom-0 left-4 right-4 h-[1.5px] bg-gradient-to-r from-[#c8a55a] to-[#c8a55a]/40" />
-      )}
     </div>
   );
 }
@@ -279,28 +336,42 @@ function MobileNavItem({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-b border-[#1f1f1f]/60">
-      <div className="flex items-center justify-between py-5">
+    <div
+      style={{ borderBottom: '1px solid rgba(23,23,23,0.08)' }}
+    >
+      <div className="flex items-center justify-between py-4">
         <Link
           href={item.href}
           onClick={onClose}
-          className="text-[12px] tracking-[0.2em] uppercase text-white font-medium font-[Montserrat]"
+          style={{
+            color: '#171717',
+            fontSize: '13px',
+            fontWeight: 500,
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+          }}
         >
           {item.label}
         </Link>
         {item.children && (
           <button
             onClick={() => setOpen((v) => !v)}
-            className="text-[#6b6b6b] p-2 cursor-pointer"
+            style={{ color: '#171717' }}
+            aria-label={open ? 'Collapse' : 'Expand'}
           >
             <svg
-              width="14"
-              height="14"
+              width="16"
+              height="16"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.5"
-              className={`transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              style={{
+                transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+                transition: 'transform 0.2s ease',
+              }}
             >
               <path d="M6 9l6 6 6-6" />
             </svg>
@@ -308,13 +379,21 @@ function MobileNavItem({
         )}
       </div>
       {open && item.children && (
-        <div className="pb-5 pl-5 flex flex-col gap-4">
+        <div className="pb-4 pl-4 flex flex-col gap-3">
           {item.children.map((child) => (
             <Link
               key={child.href}
               href={child.href}
               onClick={onClose}
-              className="text-[12px] text-[#8a8a8a] hover:text-[#c8a55a] transition-colors tracking-wide font-[Montserrat] font-light"
+              style={{
+                color: '#171717',
+                fontSize: '13px',
+                fontWeight: 500,
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
+                opacity: 0.6,
+              }}
+              className="hover:opacity-100 transition-opacity"
             >
               {child.label}
             </Link>

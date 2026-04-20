@@ -1,33 +1,77 @@
 'use client';
 
-const messages = [
-  'FREE DELIVERY ON ORDERS OVER £150',
-  'OFFICIAL BUGATTI MERCHANDISE',
-  'FREE DELIVERY ON ORDERS OVER €150',
-  '10% OFF YOUR FIRST ORDER — SUBSCRIBE TO OUR NEWSLETTER',
-  'FREE RETURNS WITHIN 30 DAYS',
-  'SECURE CHECKOUT WITH 15+ PAYMENT OPTIONS',
+import { useState, useEffect, useCallback } from 'react';
+
+export const TOPBAR_HEIGHT = '3rem';
+
+type Message = {
+  text: string;
+  href?: string;
+};
+
+const messages: Message[] = [
+  { text: 'SUBSCRIBE TO NEWSLETTER FOR 10% OFF', href: '/pages/newsletter' },
+  { text: 'UK/EU FREE DELIVERY OVER £150/€150' },
+  { text: 'A QUESTION? VISIT OUR CONTACT PAGE', href: '/contact' },
 ];
 
 export default function AnnouncementBar() {
-  const repeated = [...messages, ...messages];
+  const [current, setCurrent] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  const advance = useCallback(() => {
+    setVisible(false);
+    setTimeout(() => {
+      setCurrent((prev) => (prev + 1) % messages.length);
+      setVisible(true);
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(advance, 3000);
+    return () => clearInterval(id);
+  }, [advance]);
+
+  const msg = messages[current];
+
+  const inner = (
+    <span
+      style={{
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '12px',
+        letterSpacing: '0.05em',
+        color: msg.href ? '#004BFA' : '#fafafa',
+        transition: 'opacity 0.5s',
+        opacity: visible ? 1 : 0,
+        textDecoration: msg.href ? 'underline' : 'none',
+        cursor: msg.href ? 'pointer' : 'default',
+      }}
+    >
+      {msg.text}
+    </span>
+  );
 
   return (
-    <div className="relative bg-[#050506] border-b border-[#1f1f1f] overflow-hidden h-10 flex items-center">
-      {/* Subtle gold ambient line at top */}
-      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#c8a55a]/20 to-transparent" />
-
-      <div className="marquee-track flex">
-        {repeated.map((msg, i) => (
-          <span
-            key={i}
-            className="text-[10px] tracking-[0.22em] text-[#8a8a8a] uppercase px-12 whitespace-nowrap font-[Montserrat] font-light"
-          >
-            {msg}
-            <span className="ml-12 text-[#c8a55a]/60">●</span>
-          </span>
-        ))}
-      </div>
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        height: TOPBAR_HEIGHT,
+        backgroundColor: '#1f1f1f',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      className="2xl:h-14"
+    >
+      {msg.href ? (
+        <a href={msg.href}>{inner}</a>
+      ) : (
+        inner
+      )}
     </div>
   );
 }

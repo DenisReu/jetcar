@@ -37,7 +37,7 @@ export default function ProductCard({ product, className = '' }: ProductCardProp
       onMouseLeave={() => setHovered(false)}
     >
       {/* Image */}
-      <div className="relative overflow-hidden bg-[#0a0a0a] aspect-square mb-4">
+      <div className="relative overflow-hidden bg-[#111] aspect-square mb-4">
         <Image
           src={product.images[hovered && product.images[1] ? 1 : 0]}
           alt={product.name}
@@ -46,23 +46,20 @@ export default function ProductCard({ product, className = '' }: ProductCardProp
           className="object-cover product-card-img"
         />
 
-        {/* Subtle dark overlay on hover */}
-        <div className={`absolute inset-0 bg-[#020203]/10 transition-opacity duration-500 ${hovered ? 'opacity-100' : 'opacity-0'}`} />
-
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {product.isNew && (
-            <span className="bg-white/95 text-[#020203] text-[9px] tracking-[0.18em] uppercase font-semibold px-2.5 py-1 font-[Montserrat]">
+            <span className="bg-white text-black text-[10px] tracking-[0.15em] uppercase font-bold px-2 py-0.5">
               New
             </span>
           )}
           {discount && (
-            <span className="bg-[#c8a55a] text-[#020203] text-[9px] tracking-[0.12em] uppercase font-semibold px-2.5 py-1 font-[Montserrat]">
+            <span className="bg-[#c9a84c] text-black text-[10px] tracking-[0.1em] uppercase font-bold px-2 py-0.5">
               Save {discount}%
             </span>
           )}
           {!product.inStock && (
-            <span className="bg-[#1f1f1f] text-[#6b6b6b] text-[9px] tracking-[0.12em] uppercase px-2.5 py-1 font-[Montserrat]">
+            <span className="bg-[#222] text-[#666] text-[10px] tracking-[0.1em] uppercase px-2 py-0.5">
               Sold Out
             </span>
           )}
@@ -70,39 +67,34 @@ export default function ProductCard({ product, className = '' }: ProductCardProp
 
         {/* Quick add */}
         <div
-          className={`absolute bottom-0 inset-x-0 transition-all duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-            hovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+          className={`absolute bottom-0 inset-x-0 transition-transform duration-300 ${
+            hovered ? 'translate-y-0' : 'translate-y-full'
           }`}
         >
           <button
             onClick={handleAddToCart}
             disabled={!product.inStock}
-            className="w-full bg-[#c8a55a] hover:bg-[#dfc07a] disabled:bg-[#1f1f1f] disabled:text-[#4a4a4a] text-[#020203] text-[10px] tracking-[0.2em] uppercase font-semibold py-3.5 transition-colors duration-200 cursor-pointer font-[Montserrat]"
+            className="w-full bg-[#c9a84c] hover:bg-[#e2c97e] disabled:bg-[#333] disabled:text-[#555] text-black text-[11px] tracking-[0.18em] uppercase font-bold py-3.5 transition-colors"
           >
             {added ? '✓ Added' : product.inStock ? 'Add to Cart' : 'Sold Out'}
           </button>
         </div>
-
-        {/* Hover border glow */}
-        <div className={`absolute inset-0 border transition-colors duration-500 pointer-events-none ${
-          hovered ? 'border-[#c8a55a]/15' : 'border-transparent'
-        }`} />
       </div>
 
       {/* Info */}
-      <div className="space-y-1.5 px-0.5">
-        <p className="text-[10px] text-[#4a4a4a] tracking-[0.15em] uppercase font-[Montserrat] font-light">
+      <div className="space-y-1 px-0.5">
+        <p className="text-[11px] text-[#666] tracking-[0.12em] uppercase">
           {product.vendor}
         </p>
-        <h3 className="text-[#e0e0e0] text-[13px] leading-snug group-hover:text-[#c8a55a] transition-colors duration-300 tracking-wide line-clamp-2 font-[Montserrat] font-light">
+        <h3 className="text-white text-sm leading-snug group-hover:text-[#c9a84c] transition-colors tracking-wide line-clamp-2">
           {product.name}
         </h3>
-        <div className="flex items-center gap-2.5 pt-1">
-          <span className="text-white font-medium text-[13px] tracking-wide font-[Montserrat]">
+        <div className="flex items-center gap-2 pt-0.5">
+          <span className="text-white font-medium text-sm tracking-wide">
             {formatPrice(product.price, product.currency)}
           </span>
           {product.originalPrice && (
-            <span className="text-[#4a4a4a] text-[12px] line-through tracking-wide font-[Montserrat] font-light">
+            <span className="text-[#555] text-sm line-through tracking-wide">
               {formatPrice(product.originalPrice, product.currency)}
             </span>
           )}
