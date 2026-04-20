@@ -1,102 +1,305 @@
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { products } from '@/data/products';
-import { formatPrice } from '@/lib/utils';
 
-const lookProducts = products.slice(0, 3);
+interface FeaturedProduct {
+  id: string;
+  name: string;
+  price: string;
+  image: string;
+  href: string;
+}
+
+const featuredProducts: FeaturedProduct[] = [
+  {
+    id: 'hoodie',
+    name: 'BUGATTI 20YR VEYRON - ETTORE EDITION HOODIE',
+    price: '£140',
+    image: '/images/products/veyron-hoodie.webp',
+    href: '/products/bugatti-20yr-veyron-ettore-edition-hoodie',
+  },
+  {
+    id: 'tshirt',
+    name: 'BUGATTI 20YR VEYRON - ETTORE EDITION T-SHIRT',
+    price: '£80',
+    image: '/images/products/veyron-tshirt.webp',
+    href: '/products/bugatti-20yr-veyron-ettore-edition-tshirt',
+  },
+];
+
+interface Hotspot {
+  id: string;
+  left: string;
+  top: string;
+  productId: string;
+}
+
+const hotspots: Hotspot[] = [
+  { id: 'h1', left: '47%', top: '40%', productId: 'hoodie' },
+  { id: 'h2', left: '50%', top: '50%', productId: 'tshirt' },
+];
 
 export default function ShopTheLook() {
+  const [activeHotspot, setActiveHotspot] = useState<string | null>(null);
+
+  const toggleHotspot = (id: string) => {
+    setActiveHotspot((prev) => (prev === id ? null : id));
+  };
+
   return (
-    <section className="py-16 bg-[#0d0d0d]">
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Image */}
-          <div className="relative aspect-[4/5] overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=900&q=80"
-              alt="Shop the look"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
-            <div className="absolute top-6 left-6">
-              <span className="bg-[#c9a84c] text-black text-[10px] tracking-[0.2em] uppercase font-bold px-3 py-1.5">
-                Shop the Look
-              </span>
-            </div>
+    <section
+      style={{
+        background: '#000000',
+        paddingTop: '52px',
+        paddingBottom: '100px',
+      }}
+    >
+      <div className="max-w-[1440px] mx-auto px-10">
+        {/* Section heading */}
+        <h2
+          style={{
+            fontFamily: 'Inter, sans-serif',
+            textTransform: 'uppercase',
+            fontWeight: 400,
+            letterSpacing: '-0.02em',
+            fontSize: 'clamp(2rem, 3vw, 3.5rem)',
+            color: '#ffffff',
+            marginBottom: '2.5rem',
+          }}
+        >
+          SHOP{' '}
+          <em style={{ fontStyle: 'italic' }}>THE LOOK</em>
+        </h2>
+
+        {/*
+          Two-column split on desktop:
+            - Left (~65%): image with hotspots
+            - Right (~35%): product list
+          On mobile: stack — products above image
+        */}
+        <div className="flex flex-col lg:flex-row gap-8">
+
+          {/* Mobile: product list comes first */}
+          <div className="lg:hidden flex flex-col gap-6">
+            <ProductList products={featuredProducts} />
           </div>
 
-          {/* Products */}
-          <div>
-            <p className="text-[#c9a84c] text-[11px] tracking-[0.3em] uppercase mb-3">
-              Featured Picks
-            </p>
-            <h2 className="text-white text-3xl md:text-4xl font-light tracking-tight leading-none mb-6">
-              The Bugatti
-              <br />
-              <span className="text-[#a0a0a0]">Lifestyle Edit</span>
-            </h2>
-            <p className="text-[#666] text-sm tracking-wide leading-relaxed mb-10">
-              Curated selections from our latest collections. Each piece embodies
-              the Bugatti spirit — uncompromising quality, timeless design, and
-              exceptional performance.
-            </p>
+          {/* Left column: large image with hotspots */}
+          <div
+            className="relative overflow-hidden flex-shrink-0"
+            style={{ flex: '0 0 65%', aspectRatio: '4 / 5' }}
+          >
+            <Image
+              src="/images/banners/20yr-hoodie-chiron.webp"
+              alt="Shop the Look — person in blue hoodie in Bugatti"
+              fill
+              sizes="(max-width: 1024px) 100vw, 65vw"
+              className="object-cover"
+            />
 
-            <div className="space-y-6">
-              {lookProducts.map((product, i) => (
-                <Link
-                  key={product.id}
-                  href={`/products/${product.slug}`}
-                  className="flex items-center gap-5 group border-b border-[#1a1a1a] pb-6 last:border-0 last:pb-0"
+            {/* Dark overlay */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'rgba(23,23,23,0.4)',
+              }}
+            />
+
+            {/* Hotspot buttons */}
+            {hotspots.map((hs) => {
+              const product = featuredProducts.find((p) => p.id === hs.productId);
+              const isActive = activeHotspot === hs.id;
+
+              return (
+                <div
+                  key={hs.id}
+                  style={{
+                    position: 'absolute',
+                    left: hs.left,
+                    top: hs.top,
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 10,
+                  }}
                 >
-                  <div className="relative w-20 h-20 shrink-0 overflow-hidden bg-[#161616]">
-                    <Image
-                      src={product.images[0]}
-                      alt={product.name}
-                      fill
-                      sizes="80px"
-                      className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[10px] text-[#555] tracking-[0.15em] uppercase mb-0.5">
-                      {product.vendor}
-                    </p>
-                    <p className="text-white text-sm tracking-wide group-hover:text-[#c9a84c] transition-colors truncate">
-                      {product.name}
-                    </p>
-                    <p className="text-[#a0a0a0] text-sm mt-0.5">
-                      {formatPrice(product.price, product.currency)}
-                    </p>
-                  </div>
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    className="text-[#555] group-hover:text-[#c9a84c] transition-colors shrink-0"
-                  >
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              ))}
-            </div>
+                  {/* Pulse ring */}
+                  <span
+                    style={{
+                      position: 'absolute',
+                      inset: '-6px',
+                      borderRadius: '50%',
+                      border: '1px solid rgba(255,255,255,0.5)',
+                      animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
+                    }}
+                  />
 
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-3 mt-10 bg-transparent border border-[#2a2a2a] hover:border-[#c9a84c] text-white hover:text-[#c9a84c] text-[11px] tracking-[0.2em] uppercase px-8 py-4 transition-all"
-            >
-              View All Products
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </Link>
+                  {/* Bullet */}
+                  <button
+                    onClick={() => toggleHotspot(hs.id)}
+                    aria-label={`View product: ${product?.name ?? ''}`}
+                    style={{
+                      width: '12px',
+                      height: '12px',
+                      borderRadius: '50%',
+                      background: '#ffffff',
+                      border: 'none',
+                      cursor: 'pointer',
+                      display: 'block',
+                      position: 'relative',
+                      zIndex: 1,
+                    }}
+                  />
+
+                  {/* Tooltip */}
+                  {isActive && product && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: '20px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        background: '#ffffff',
+                        color: '#000000',
+                        padding: '0.75rem',
+                        borderRadius: '2px',
+                        width: '160px',
+                        boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+                        zIndex: 20,
+                      }}
+                    >
+                      <p
+                        style={{
+                          fontSize: '11px',
+                          fontWeight: 600,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.04em',
+                          marginBottom: '4px',
+                          lineHeight: 1.3,
+                        }}
+                      >
+                        {product.name}
+                      </p>
+                      <p
+                        style={{
+                          fontSize: '12px',
+                          fontWeight: 500,
+                          color: '#333333',
+                        }}
+                      >
+                        {product.price}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Right column: product list — desktop only */}
+          <div
+            className="hidden lg:flex flex-col justify-center gap-6"
+            style={{ flex: '0 0 35%' }}
+          >
+            <ProductList products={featuredProducts} />
           </div>
         </div>
       </div>
+
+      {/* Keyframe for hotspot pulse ring */}
+      <style>{`
+        @keyframes ping {
+          75%, 100% {
+            transform: scale(2);
+            opacity: 0;
+          }
+        }
+      `}</style>
     </section>
+  );
+}
+
+function ProductList({ products }: { products: FeaturedProduct[] }) {
+  return (
+    <>
+      {products.map((product) => (
+        <div
+          key={product.id}
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: '1rem',
+            borderBottom: '1px solid #1a1a1a',
+            paddingBottom: '1.5rem',
+          }}
+        >
+          {/* Product image */}
+          <div
+            style={{
+              position: 'relative',
+              width: '80px',
+              height: '80px',
+              flexShrink: 0,
+              overflow: 'hidden',
+              background: '#111111',
+            }}
+          >
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="80px"
+              className="object-cover"
+            />
+          </div>
+
+          {/* Product info */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p
+              style={{
+                color: '#ffffff',
+                fontSize: '12px',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em',
+                lineHeight: 1.4,
+                marginBottom: '0.5rem',
+              }}
+            >
+              {product.name}
+            </p>
+            <p
+              style={{
+                color: '#a0a0a0',
+                fontSize: '13px',
+                marginBottom: '0.75rem',
+              }}
+            >
+              {product.price}
+            </p>
+            <Link
+              href={product.href}
+              style={{
+                display: 'inline-block',
+                border: '1px solid #ffffff',
+                color: '#ffffff',
+                background: 'transparent',
+                fontSize: '10px',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.12em',
+                padding: '6px 14px',
+                textDecoration: 'none',
+                transition: 'background 0.2s, color 0.2s',
+              }}
+            >
+              ADD TO CART
+            </Link>
+          </div>
+        </div>
+      ))}
+    </>
   );
 }

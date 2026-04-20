@@ -13,25 +13,45 @@ export default function NewsletterForm() {
 
   if (subscribed) {
     return (
-      <p className="text-[#c9a84c] text-sm tracking-wide">
-        ✓ You&apos;re subscribed! Check your inbox for your 10% discount code.
+      <p className="text-white text-sm tracking-wide">
+        ✓ You&apos;re subscribed!
       </p>
     );
   }
 
   return (
-    <form className="flex gap-0 w-full max-w-md" onSubmit={handleSubmit}>
+    <form className="flex w-full max-w-md" onSubmit={handleSubmit}>
       <input
         type="email"
         placeholder="Your email address"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="flex-1 bg-[#161616] border border-[#2a2a2a] border-r-0 px-5 py-3 text-sm text-white outline-none placeholder:text-[#555] focus:border-[#c9a84c] transition-colors rounded-l-sm"
+        className="flex-1 px-5 py-3 text-sm text-white outline-none transition-colors"
+        style={{
+          background: 'rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.3)',
+          borderRight: 0,
+          color: '#ffffff',
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.borderColor = '#ffffff';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+        }}
       />
       <button
         type="submit"
-        className="bg-[#c9a84c] hover:bg-[#e2c97e] text-black text-xs tracking-[0.18em] uppercase font-bold px-6 py-3 transition-colors rounded-r-sm whitespace-nowrap"
+        className="whitespace-nowrap font-semibold transition-colors"
+        style={{
+          background: '#ffffff',
+          color: '#004BFA',
+          textTransform: 'uppercase',
+          letterSpacing: '0.15em',
+          fontSize: '0.75rem',
+          padding: '0.75rem 1.5rem',
+        }}
       >
         Subscribe
       </button>

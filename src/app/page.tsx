@@ -1,36 +1,20 @@
-import HeroBanner from '@/components/sections/HeroBanner';
-import TrustBar from '@/components/sections/TrustBar';
-import FeaturedBanners from '@/components/sections/FeaturedBanners';
-import ProductGrid from '@/components/sections/ProductGrid';
-import CategoryGrid from '@/components/sections/CategoryGrid';
+import HeroSlideshow from '@/components/sections/HeroSlideshow';
+import MarqueeText from '@/components/sections/MarqueeText';
+import FeaturedCollections from '@/components/sections/FeaturedCollections';
 import ShopTheLook from '@/components/sections/ShopTheLook';
-import { getBestSellers, getNewArrivals, collections } from '@/data/products';
+import BestSellers from '@/components/sections/BestSellers';
+import CategoryGrid from '@/components/sections/CategoryGrid';
 
 export default function HomePage() {
-  const bestSellers = getBestSellers();
-  const newArrivals = getNewArrivals();
-
   return (
     <>
-      <HeroBanner />
-      <TrustBar />
-      <FeaturedBanners />
-      <ProductGrid
-        title="Best Sellers"
-        subtitle="Our most-loved products"
-        products={bestSellers}
-        viewAllHref="/products"
-        columns={4}
-      />
-      <CategoryGrid collections={collections} />
+      <HeroSlideshow />
+      <MarqueeText />
+      <FeaturedCollections />
       <ShopTheLook />
-      <ProductGrid
-        title="New Arrivals"
-        subtitle="Just landed"
-        products={newArrivals}
-        viewAllHref="/products"
-        columns={4}
-      />
+      <BestSellers />
+      <MarqueeText />
+      <CategoryGrid />
     </>
   );
 }
