@@ -7,7 +7,9 @@
       "Read(//c/Users/Admin/.claude/plugins/cache/ui-ux-pro-max-skill/ui-ux-pro-max/2.5.0/**)",
       "Bash(python scripts/search.py \"luxury automotive e-commerce dark premium gold\" --design-system -p \"Bugatti Store\")",
       "Bash(python scripts/search.py \"dark luxury gold e-commerce premium\" --domain style -n 5)",
-      "Bash(python scripts/search.py \"elegant luxury premium serif\" --domain typography -n 3)"
+      "Bash(python scripts/search.py \"elegant luxury premium serif\" --domain typography -n 3)",
+      "mcp__playwright__browser_resize",
+      "mcp__playwright__browser_navigate"
     ]
   },
   "enableAllProjectMcpServers": true,
