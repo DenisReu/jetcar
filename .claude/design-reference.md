@@ -1,372 +1,214 @@
-# Design Reference
-Sources:
-- https://bugatti.store/ (Shopify e-commerce store — Official Bugatti Merchandise)
-- https://www.bugatti.com/ (Corporate brand site — Interbrand rebrand 2022/2024)
+# Design Reference — Bugatti Store Clone
 
-Analyzed: 2026-04-21
-Data source: Direct CSS extraction from `/tmp/bugatti-theme.css` + `/tmp/bugatti-home.html` (bugatti.store); Interbrand brand documentation + Brandfetch (bugatti.com)
+> Source: https://bugatti.store/ (Shopify theme, extracted from live HTML/CSS)
+> Supplementary: https://www.bugatti.com/ (brand identity research)
+> Last updated: 2026-04-20
 
 ---
 
-## bugatti.store — Complete Design Spec
+## 1. bugatti.store — Complete Design Spec
 
-### Color Palette
+### 1.1 Color Palette
 
-| Role | HEX | RGB | Usage |
-|------|-----|-----|-------|
-| Background | `#000000` | 0 0 0 | Page background |
-| Foreground / Text | `#ffffff` | 255 255 255 | All primary text |
-| Accent / Highlight | `#004BFA` | 0 75 250 | CTAs, links, active states, price, info |
-| Header BG | `#ffffff` | 255 255 255 | Sticky header background |
-| Header Text | `#171717` | 23 23 23 | Header navigation text |
-| Topbar BG | `#1f1f1f` | 31 31 31 | Announcement bar background |
-| Footer BG | `#1f1f1f` | 31 31 31 | Main footer background |
-| Copyright BG | `#171717` | 23 23 23 | Bottom copyright bar |
-| Button BG | `#ffffff` | 255 255 255 | Primary button fill |
-| Button Text | `#000000` | 0 0 0 | Primary button label |
-| Price | `#004BFA` | 0 75 250 | Product prices |
-| Sale / Discount | `#E11D48` | 225 29 72 | Sale price, sale badge |
-| Sale Tag Text | `#ffffff` | 255 255 255 | Text on sale badges |
-| Success Text | `#4D7C0F` | 77 124 15 | Positive alerts |
-| Success BG | `#F7FEE7` | 247 254 231 | Success alert background |
-| Error Text | `#BE123C` | 190 18 60 | Error states |
-| Error BG | `#FFF1F2` | 255 241 242 | Error alert background |
-| Info Text | `#004BFA` | 0 75 250 | Info alerts |
-| Info BG | `#E1E1E1` | 225 225 225 | Info alert background |
-| Border | `rgba(255,255,255,0.10)` | — | Subtle borders, dividers |
-| Border Dark | `rgba(255,255,255,0.40)` | — | Stronger borders |
-| Border Light | `rgba(255,255,255,0.06)` | — | Hairline borders |
-| Muted Text | `#a0a0a0` | 160 160 160 | Secondary labels, captions |
+| Token | Hex | Usage |
+|-------|-----|-------|
+| `--color-bg` | `#000000` | Page background |
+| `--color-fg` | `#FFFFFF` | Body text |
+| `--color-highlight` | `#004BFA` | Blue accent, CTAs, price, active states |
+| `--color-btn-bg` | `#FFFFFF` | Primary button background |
+| `--color-btn-text` | `#000000` | Primary button text |
+| `--color-header-bg` | `#FFFFFF` | Header/nav background |
+| `--color-header-fg` | `#171717` | Header text, icons |
+| `--color-topbar-bg` | `#1F1F1F` | Announcement bar background |
+| `--color-topbar-fg` | `#FAFAFA` | Announcement bar text |
+| `--color-footer-bg` | `#1F1F1F` | Footer main section background |
+| `--color-copyright-bg` | `#171717` | Footer copyright bar background |
+| `--color-price` | `#004BFA` | Product price (blue) |
+| `--color-sale` | `#E11D48` | Sale / discounted price |
+| `--color-success` | `#4D7C0F` | Success messages |
+| `--color-error` | `#BE123C` | Error messages |
+| `--color-muted` | `#A0A0A0` | Secondary text |
+| `--color-placeholder` | `#E1E1E1` | Input placeholder |
+| `--color-border` | `rgba(255,255,255,0.10)` | Subtle borders |
+| `--color-border-dark` | `rgba(255,255,255,0.40)` | Visible borders |
+| `--color-border-light` | `rgba(255,255,255,0.06)` | Ghost borders |
 
-### Gradients
+### 1.2 Typography
 
-- **Hero overlay**: `linear-gradient(to top, rgba(0,0,0,0.60) 0%, transparent 50%)` — hero slide darkening
-- **Section fade**: `rgba(0,0,0,0) → rgba(0,0,0,0.20)` — over hero images
+| Element | Font | Weight | Size | Letter-spacing | Transform |
+|---------|------|--------|------|----------------|-----------|
+| Headings (H1–H3) | BugattiText | 700 | varies (`clamp`) | `-0.03em` | UPPERCASE |
+| Body | BugattiText / Inter | 400 | `0.875rem–1rem` | `0` | none |
+| Labels / tags | BugattiText / Inter | 500 | `0.625rem–0.75rem` | `0.12em–0.18em` | UPPERCASE |
+| Buttons | Inter | 500 | `0.75rem` | `0.12em` | UPPERCASE |
+| Footer section titles | Inter | 600 | `10px` | `0.18em` | UPPERCASE |
+| Footer links | Inter | 400 | `14px` | `0.05em` | none |
+| Copyright | Inter | 400 | `10px` | `0.05em` | none |
+| Price | BugattiText | 700 | `1rem–1.25rem` | `0` | none |
 
-### Typography
-
-**Font Stack:**
-- Heading: `"BugattiBold", Inter, sans-serif` (custom woff2: `/fonts/BUGATTIText-Bold.woff2`)
-- Body: `"BugattiRegular", Inter, sans-serif` (custom woff2: `/fonts/BUGATTIText-Regular.woff2`)
-
-**Type Scale (resolved from CSS custom props):**
-- H0 / Hero: `clamp(4rem, fluid, 5.625rem)` (64–90px) / weight 700 / letter-spacing -0.03em
-- H1: `clamp(2.25rem → 3.5rem)` (36–56px responsive) / weight 700
-- H2: `clamp(1.5rem → 2.25rem)` (24–36px responsive) / weight 700
-- H3: `clamp(1.25rem → 1.875rem)` (20–30px responsive) / weight 700
-- H4: `1.125rem` (18px) / weight 700
-- Body: `1rem` (16px) / weight 400 / line-height 1.2
-- Navigation: `clamp(0.875rem, 0.748rem + 0.317vw, 1.125rem)` / weight 500
-- Button: `clamp(0.875rem → 1rem)` / weight 500 / letter-spacing 0.12em / UPPERCASE
-- Product title: `clamp(1rem → 1.25rem)` / weight 500
-- Caption: `0.75rem` (12px) / weight 400
-
-### Components
-
-#### Cards (Product Cards)
-```
-border-radius: clamp(1rem, 1.578vw, 1.875rem)  /* ~16–30px responsive */
-box-shadow: none
-border: none
-background: transparent (image fills the card)
-padding: 0 (image fills, text below)
-aspect-ratio: 1/1 (square product images)
-overflow: hidden
+**Font stacks:**
+```css
+font-family: 'BugattiText', 'Inter', sans-serif;   /* headings / brand elements */
+font-family: var(--font-inter), 'Inter', sans-serif; /* UI / small text */
 ```
 
-#### Buttons — Primary (btn-bugatti-white)
-```
-border-radius: calc(infinity * 1px)  /* full pill */
-height: auto (padding-based)
-padding: 0.875rem 2rem
-background: #ffffff
-color: #000000
-border: 1.5px solid #ffffff
-font-weight: 500
-font-size: 0.75rem
-letter-spacing: 0.12em
-text-transform: uppercase
-transition: background 0.3s, color 0.3s
-hover → background: transparent; color: #ffffff
-```
+### 1.3 Spacing Scale
 
-#### Buttons — Secondary / Outline (btn-bugatti-outline)
-```
-border-radius: calc(infinity * 1px)  /* full pill */
-padding: 0.875rem 2rem
-background: transparent
-color: #ffffff
-border: 1.5px solid rgba(255,255,255,0.4)
-font-weight: 500
-font-size: 0.75rem
-letter-spacing: 0.12em
-text-transform: uppercase
-hover → background: #ffffff; color: #000000; border-color: #ffffff
-```
+Based on `--sp-*` tokens (mirrors Shopify theme):
+- `--sp-1`: `0.25rem` (4px)
+- `--sp-2`: `0.5rem` (8px)
+- `--sp-3`: `0.75rem` (12px)
+- `--sp-4`: `1rem` (16px)
+- `--sp-6`: `1.5rem` (24px)
+- `--sp-8`: `2rem` (32px)
+- `--sp-10`: `2.5rem` (40px)
+- `--sp-12`: `3rem` (48px)
+- `--sp-16`: `4rem` (64px)
+- `--sp-20`: `5rem` (80px)
+- `--sp-24`: `6rem` (96px)
 
-#### Buttons — Blue (btn-bugatti-blue)
-```
-background: #004BFA
-color: #ffffff
-border: 1.5px solid #004BFA
-hover → background: #003CC8; border-color: #003CC8
-```
+### 1.4 Border Radius
 
-#### Inputs / Search
-```
-border-radius: 0.375rem (6px)
-border: 1px solid rgba(255,255,255,0.1)
-height: var(--sp-13) = 3.25rem (52px)
-padding-inline: 1.625rem
-background: rgba(255,255,255,0.06)
-color: #ffffff
-```
+| Component | Value |
+|-----------|-------|
+| Pill buttons | `3.75rem` (60px) |
+| Product cards | `clamp(0.625rem, 1.053vw, 1.25rem)` |
+| Input fields | `0.375rem` |
+| Payment badges | `2px` |
+| Tags / chips | `3.75rem` |
 
-#### Newsletter Input (in blue strip)
-```
-background: rgba(255,255,255,0.1)
-border: 1px solid rgba(255,255,255,0.3)
-color: #ffffff
-```
-
-#### Navigation — Header
-```
-type: sticky topbar + sticky header
-topbar-height: 3rem (48px) / 3.5rem at ≥1536px
-header-height: ~4rem (64px)
-header-background: #ffffff
-header-text: #171717
-header-border: none (shadow-free)
-active-color: #004BFA
-inactive-color: #171717
-dropdown-bg: #ffffff
-dropdown-border: rgba(0,0,0,0.1)
-logo: SVG (inverted on white header, white on dark)
-```
-
-#### Navigation — Topbar (Announcement Bar)
-```
-background: #1f1f1f
-color: #fafafa
-height: 3rem
-font-size: 0.75rem
-letter-spacing: 0.1em
-link-color: #004BFA
-rotating messages: 3s interval, 0.5s fade transition
-```
-
-#### Marquee / Banner Strip
-```
-background: #004BFA
-color: #ffffff
-height: 3.5rem
-font: uppercase, letter-spacing 0.2em
-animation: marquee 40s linear infinite
-```
-
-#### Badges / Tags
-```
-sale badge: background #E11D48; color #ffffff; border-radius 0.25rem; padding 0.2rem 0.5rem; font-size 0.625rem
-```
-
-#### Icons
-```
-style: outline (stroke-based SVG)
-stroke-width: 1.5px
-size: 20–24px typical
-color: currentColor
-```
-
-#### Avatars / Images
-```
-product images: aspect-ratio 1/1, object-fit cover
-hero images: 100svh height, object-fit cover
-```
-
-### Layout
-
-```
-max-content-width: 1900px (--page-width)
-topbar-height: 3rem (48px) / 3.5rem at ≥1536px
-header-height: ~4rem (64px)
-content-padding: clamp(1rem, 5vw, 3rem)
-card-gap: 1rem (16px)
-section-spacing: clamp(2rem, 5vw, 5rem)
-grid: 4-col desktop / 2-col mobile
-density: normal
-```
-
-### Animations
+### 1.5 Animation Curves
 
 ```css
---animation-nav: 0.5s cubic-bezier(0.6, 0, 0.4, 1)
---animation-primary: 0.5s cubic-bezier(0.3, 1, 0.3, 1)
---animation-smooth: 0.7s cubic-bezier(0.7, 0, 0.3, 1)
---animation-fast: 0.3s cubic-bezier(0.7, 0, 0.3, 1)
---animation-short: 0.2s cubic-bezier(0.7, 0, 0.3, 1)
+--anim-primary: 0.5s cubic-bezier(0.3, 1, 0.3, 1);   /* hero slides, primary transitions */
+--anim-smooth:  0.7s cubic-bezier(0.7, 0, 0.3, 1);   /* image hover scale */
+--anim-fast:    0.3s cubic-bezier(0.7, 0, 0.3, 1);   /* button hover, quick */
+--anim-short:   0.2s cubic-bezier(0.7, 0, 0.3, 1);   /* micro-interactions */
+--anim-nav:     0.5s cubic-bezier(0.6, 0, 0.4, 1);   /* nav drawer / dropdown */
 ```
 
-### Style Summary
+### 1.6 Layout
 
-```
-overall: dark luxury e-commerce
-theme: dark
-icons: outline, stroke 1.5px
-complexity: moderate
-special:
-  - Full pill buttons (border-radius: infinity)
-  - BugattiText custom font family (Bold + Regular)
-  - Accent blue #004BFA used for prices, links, CTA
-  - White header on dark page (inverted section)
-  - Marquee strip in brand blue between sections
-  - Product images serve as WebP from Shopify CDN (despite .jpg URL extension)
-  - Hero: full-viewport crossfade slideshow, zoom-out animation per slide
-  - Topbar: rotating 3-message carousel
-```
+| Token | Value |
+|-------|-------|
+| Max page width | `1900px` |
+| Content max-width | `1440px` |
+| Topbar height | `3rem` (desktop: `3.5rem` at ≥1536px) |
+| Header height (scrolled) | `4rem` |
+| Section padding (x) | `clamp(1.5rem, 5vw, 4rem)` |
+| Section padding (y) | `clamp(3rem, 6vw, 5rem)` |
+| Grid gap (products) | `1rem` |
+| Product grid | 4 cols desktop / 2 cols mobile |
+
+### 1.7 Component Specs
+
+#### Announcement Bar
+- Fixed at top, `z-index: 50`, `height: 3rem`
+- Background: `#1F1F1F`, text: `#FAFAFA`
+- 3 rotating messages, 3s interval, 0.5s opacity fade
+- Accent links: `#004BFA`
+
+#### Header / Navbar
+- Sticky at `top: 3rem`, `z-index: 40`
+- Background: `#FFFFFF`, text: `#171717`
+- 3-column layout: [search + hamburger] | [logo + desktop nav] | [cart]
+- Logo: SVG, max-height `28px`, inverted to dark on white background
+- Nav items: `10px`, `0.15em` letter-spacing, UPPERCASE
+- Active state: `#004BFA` text
+- Dropdowns: 120ms hover debounce, slide-in animation
+- Cart count badge: `#004BFA` dot
+
+#### Product Cards
+- Aspect ratio: `3/4` (portrait)
+- Hover: image scale `1.07`, transition `0.7s cubic-bezier(0.7, 0, 0.3, 1)`
+- Product name: white, `0.875rem`, medium weight
+- Price: `#004BFA`, `1rem`, bold
+- Overlay "QUICK ADD" button on hover
+
+#### Hero Slideshow
+- Full viewport height (`100svh`)
+- 4 slides, crossfade 0.7s opacity
+- Active slide: `@keyframes zoomOut` (scale 1.1→1.0 over 6s)
+- Overlay: `rgba(0,0,0,0.20)`
+- Nav dots: active `2rem×0.25rem` white pill, inactive `0.5rem×0.25rem` at 40% opacity
+- Content: `bottom: clamp(2rem,5vw,3rem)`, `left: clamp(1.5rem,5vw,4rem)`
+
+#### Marquee Text Band
+- Background: `#004BFA`
+- Height: `3.5rem`
+- Items: UPPERCASE, `0.75rem`, `0.2em` letter-spacing, white
+- Animation: `40s linear infinite`
+
+#### Footer
+- Newsletter strip: `#004BFA` background
+- Main grid: `#1F1F1F`, `padding: 3.5rem 2.5rem`
+- Copyright bar: `#171717`, `padding: 1rem 2.5rem`
+- 4-column grid: brand col (2→1 on desktop) + 3 link columns
+- Social icon hover: `color: #ffffff`
+- Link hover: `color: rgba(255,255,255,0.85)`
 
 ---
 
-## bugatti.com — Design Spec
+## 2. bugatti.com — Brand Identity Reference
 
-*Data from: Interbrand rebrand documentation (2022), Brandfetch brand data, public brand guidelines research*
+> Source: Bugatti brand guidelines, Interbrand rebrand 2022, public CSS research
 
-### Color Palette
+### 2.1 Color Palette
 
-| Role | HEX | Source | Usage |
-|------|-----|--------|-------|
-| Background | `#000000` | Confirmed | "Velvet black canvas" — primary page background |
-| Text Primary | `#ffffff` | Confirmed | "Showroom white" — all headline/body text |
-| Bugatti Blue | `#004CFA` | Brandfetch | Brand accent (French motorsport heritage) |
-| Gray / Quiet | `#888888`–`#999999` | Approximate | Muted moments, secondary text |
-| EB Macaron Red | `#DB1C30` | Confirmed | Logo jewel emblem, heritage element |
-| EB Macaron Black | `#000000` | Confirmed | Logo background |
-| EB Macaron White | `#ffffff` | Confirmed | Logo text/border |
-| Hairline border | `rgba(255,255,255,0.12)` | Approximate | Minimal dividers only |
+| Role | Hex | Notes |
+|------|-----|-------|
+| Background | `#000000` | Pure black, cinematic |
+| Text | `#FFFFFF` | Pure white |
+| Bugatti Blue | `#004BFA` | Same blue as bugatti.store (unified brand) |
+| Logo Red | `#DB1C30` | EB shield emblem red |
+| Logo Black | `#000000` | EB shield outline |
+| Neutral | `#161616` | Card / section backgrounds |
+| Subtle | `rgba(255,255,255,0.08)` | Dividers, ghost elements |
 
-### Typography
+### 2.2 Typography
 
-**Font Family:** Custom Bugatti typefaces (designed by Thomas Huot-Marchand / 205TF)
-- `Bugatti Display` — monumental headlines, condensed, ALL-CAPS, inspired by 19th-century Parisian typography
-- `Bugatti Monospace` — UI labels, buttons, navigation (technical/engineering character)
-- `Bugatti Text Regular` — body copy, descriptions
+| Element | Font | Notes |
+|---------|------|-------|
+| Display headings | Bugatti Display | Proprietary, serif-influenced, ultra-thin |
+| Code / mono | Bugatti Monospace | Technical specs, numbers |
+| Body / UI | Bugatti Text Regular | Same as bugatti.store `BugattiText` |
+| Numerics | Bugatti Monospace | Price, speed stats, year callouts |
 
-**Type Scale (from public documentation):**
-- Hero/Display: 288px equivalent (monumental, viewport-filling) / ALL-CAPS
-- Page title: ~80–120px / Bugatti Display / weight 700
-- Section header: ~48–64px / Bugatti Display
-- Body: 16px / Bugatti Text Regular / weight 400 / line-height 1.5
-- UI Label / Button: 14px / Bugatti Monospace / weight 400 / letter-spacing 0.15em
-- Caption: 12px / Bugatti Text Regular
+**Design character:** Extreme negative space, cinematic scale, full-bleed photography, monochrome with sparse blue accents.
 
-### Components
+### 2.3 Design Language
 
-#### Layout Philosophy (No Traditional Cards)
-```
-Bugatti.com uses "cinematic chapters" — NOT cards
-Each section = full-bleed media + overlaid headline + single CTA
-No card borders, no card shadows, no card radius
-Content areas: full-width media panels with text overlay
-```
-
-#### Buttons
-```
-style: ghost/outline only
-border: 1px solid rgba(255,255,255,0.4) (hairline)
-border-radius: 0 (sharp, geometric) OR very slight
-background: transparent
-color: #ffffff
-font: Bugatti Monospace, UPPERCASE, 14px, letter-spacing 0.15em
-hover: border-color #ffffff, subtle white fill
-```
-
-#### Navigation
-```
-type: topbar (horizontal navigation)
-background: transparent (over hero) → #000000 (on scroll)
-text-color: #ffffff
-font: Bugatti Monospace
-border-bottom: 1px solid rgba(255,255,255,0.12) on scroll
-height: ~64–80px
-active: underline or accent color #004CFA
-```
-
-#### Borders / Dividers
-```
-ONLY hairline borders: 1px solid rgba(255,255,255,0.12)
-NO drop shadows anywhere
-NO box-shadows
-NO card-style borders
-```
-
-### Layout
-
-```
-type: full-bleed cinematic sections
-max-width: none (truly full-bleed viewport-width)
-spacing-scale: 6 discrete values only (minimal)
-section-height: 100vh per hero section
-content-alignment: bottom-left typical for overlay text
-density: spacious (luxury negative space)
-```
-
-### Style Summary
-
-```
-overall: cinematic dark luxury brand editorial
-theme: dark
-icons: minimal, outline, thin stroke
-complexity: minimal (deceptively simple)
-special:
-  - No cards — every section is full-bleed media
-  - Hairline borders ONLY, zero drop shadows
-  - Monumental ALL-CAPS typography (288px scale)
-  - 6 discrete spacing values (no arbitrary gaps)
-  - Variable font technology
-  - Bugatti Blue as ONLY accent on otherwise monochrome palette
-  - EB Macaron (jewel logo) given central visual role
-  - Chiaroscuro photography with high contrast
-```
+- **Minimal, monochrome dominant** — color used sparingly as emphasis
+- **Cinematic scale** — full-bleed hero images, 100vw sections
+- **Technical precision** — hairline borders (1px), tight letter-spacing, exact grid
+- **Luxury restraint** — no gradients, no drop shadows, no texture overlays
+- **Motion: slow & intentional** — long eases (0.8s–1.2s), parallax, reveal-on-scroll
 
 ---
 
-## Shared Design DNA (both sites)
+## 3. Shared Design System (bugatti.store ↔ bugatti.com)
 
-| Property | bugatti.store | bugatti.com |
-|----------|--------------|-------------|
-| Background | `#000000` | `#000000` |
-| Text | `#ffffff` | `#ffffff` |
-| Accent Blue | `#004BFA` | `#004CFA` |
-| Brand Red | `#E11D48` (sale) | `#DB1C30` (EB logo) |
-| Button style | Pill (radius: ∞) | Sharp / ghost |
-| Font | BugattiText (Bold+Regular) | Bugatti Display/Mono/Text |
-| Cards | Rounded (16–30px) | None (full-bleed) |
-| Shadows | None | None |
-| Overall | Dark luxury e-commerce | Dark luxury editorial |
+| Property | Value |
+|----------|-------|
+| Brand blue | `#004BFA` |
+| Background | `#000000` |
+| Foreground | `#FFFFFF` |
+| Typographic family | BugattiText (Regular + Bold) |
+| Button style | Uppercase, letter-spaced, border-based |
+| Icon stroke | `1.5px` |
+| Motion language | Slow, purposeful cubic-bezier eases |
+| Grid philosophy | Full-bleed imagery + constrained content (max 1440px) |
+| Logo mark | EB oval shield (red/black) + BUGATTI wordmark (white on dark) |
 
 ---
 
-## Rules for This Project (bugatti.store clone)
+## 4. Screenshots Reference
 
-**DO:**
-- Use `#000000` as page background always
-- Use `#004BFA` for all accent interactions (hover, active, price, CTA)
-- Use full pill buttons (`border-radius: calc(infinity * 1px)`)
-- Use BugattiText-Bold for all headings with `letter-spacing: -0.03em`
-- Use `#ffffff` header with `#171717` text (inverted on dark page)
-- Keep `#1f1f1f` for topbar and footer backgrounds
-- Use `#E11D48` only for sale/discount indicators
-- Apply `stroke-width: 1.5` to all SVG icons
-- Use 4-column grid on desktop, 2-column on mobile
-- Keep animations at Bugatti easing curves (cubic-bezier(0.3, 1, 0.3, 1))
-- Use `rgba(255,255,255,0.1)` for subtle borders on dark backgrounds
-
-**DON'T:**
-- Don't use drop shadows or box-shadows anywhere
-- Don't use border-radius on square buttons (must be pill or sharp)
-- Don't use any accent color other than `#004BFA`
-- Don't add extra font weights beyond 400 and 700
-- Don't use card backgrounds (white boxes on dark bg) — keep cards transparent
-- Don't round hero/banner images
-- Don't use generic font families (must load BugattiText fonts)
-- Don't pad images within cards — let them fill the card fully
-- Don't use `letter-spacing` other than 0 on body and -0.03em on headings (except buttons: 0.12em)
+Local screenshots captured during QA:
+- `docs/design-references/clone-desktop-1440.jpg` — Full-page desktop
+- `docs/design-references/qa-hero.jpg` — Hero slideshow
+- `docs/design-references/qa-bestsellers.jpg` — Best Sellers section
+- `docs/design-references/qa-products.jpg` — Product grid
+- `docs/design-references/qa-footer.jpg` — Footer
+- `docs/design-references/qa-stl.jpg` — Shop the Look
+- `docs/design-references/qa-mobile-top.jpg` — Mobile viewport
