@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'blue' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
 }
 
@@ -14,13 +14,14 @@ export default function Button({
   ...props
 }: ButtonProps) {
   const base =
-    'inline-flex items-center justify-center font-medium tracking-[0.18em] uppercase transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
+    'inline-flex items-center justify-center font-medium tracking-[0.12em] uppercase transition-all duration-200 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed border-[1.5px]';
 
   const variants = {
-    primary: 'bg-[#c9a84c] hover:bg-[#e2c97e] text-black',
-    secondary: 'bg-white hover:bg-[#e0e0e0] text-black',
-    outline: 'border border-[#c9a84c] text-[#c9a84c] hover:bg-[#c9a84c] hover:text-black',
-    ghost: 'text-[#a0a0a0] hover:text-white',
+    primary: 'bg-white border-white text-black hover:bg-transparent hover:text-white',
+    secondary: 'bg-transparent border-white/40 text-white hover:bg-white hover:border-white hover:text-black',
+    outline: 'bg-transparent border-white text-white hover:bg-white hover:text-black',
+    blue: 'bg-[#004BFA] border-[#004BFA] text-white hover:bg-[#003CC8] hover:border-[#003CC8]',
+    ghost: 'border-transparent text-[#a0a0a0] hover:text-white',
   };
 
   const sizes = {

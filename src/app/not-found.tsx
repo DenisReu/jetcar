@@ -2,19 +2,59 @@ import Link from 'next/link';
 
 export default function NotFound() {
   return (
-    <div className="min-h-[70vh] flex flex-col items-center justify-center px-6 text-center">
-      <p className="text-[#c9a84c] text-[11px] tracking-[0.3em] uppercase mb-4">404</p>
-      <h1 className="text-white text-5xl font-light tracking-tight mb-4">
-        Page Not Found
+    <div
+      style={{
+        minHeight: '70vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '2rem',
+        textAlign: 'center',
+        background: '#000000',
+      }}
+    >
+      <p
+        style={{
+          color: '#004BFA',
+          fontSize: '11px',
+          letterSpacing: '0.3em',
+          textTransform: 'uppercase',
+          marginBottom: '1.5rem',
+        }}
+      >
+        404
+      </p>
+      <h1
+        style={{
+          color: '#ffffff',
+          fontSize: 'clamp(2.5rem,6vw,5rem)',
+          fontWeight: 700,
+          letterSpacing: '-0.03em',
+          textTransform: 'uppercase',
+          lineHeight: 1,
+          marginBottom: '1.5rem',
+        }}
+      >
+        PAGE NOT FOUND
       </h1>
-      <p className="text-[#555] text-sm tracking-wide max-w-sm mb-10">
+      <p
+        style={{
+          color: 'rgba(255,255,255,0.4)',
+          fontSize: '0.875rem',
+          letterSpacing: '0.05em',
+          maxWidth: '32ch',
+          marginBottom: '3rem',
+        }}
+      >
         The page you are looking for does not exist or has been moved.
       </p>
       <Link
         href="/"
-        className="bg-[#c9a84c] hover:bg-[#e2c97e] text-black text-[11px] tracking-[0.2em] uppercase font-bold px-10 py-4 transition-colors"
+        className="btn-bugatti btn-bugatti-white"
+        style={{ borderRadius: 0 }}
       >
-        Return Home
+        RETURN HOME
       </Link>
     </div>
   );

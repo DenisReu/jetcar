@@ -10,51 +10,86 @@ import ProductCard from '@/components/ui/ProductCard';
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total, clearCart } = useCart();
 
-  const recommended = products.filter(
-    (p) => !items.some((i) => i.product.id === p.id)
-  ).slice(0, 4);
+  const recommended = products
+    .filter((p) => !items.some((i) => i.product.id === p.id))
+    .slice(0, 4);
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen">
-        <div className="border-b border-[#1a1a1a] bg-[#0d0d0d] py-14">
-          <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
-            <h1 className="text-white text-4xl font-light tracking-tight">Your Cart</h1>
+      <div style={{ minHeight: '100vh', background: '#000000' }}>
+        <div
+          style={{
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem)',
+          }}
+        >
+          <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
+            <h1
+              style={{
+                color: '#ffffff',
+                fontSize: 'clamp(2.5rem,5vw,5rem)',
+                fontWeight: 700,
+                letterSpacing: '-0.03em',
+                textTransform: 'uppercase',
+                lineHeight: 1,
+              }}
+            >
+              YOUR CART
+            </h1>
           </div>
         </div>
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10 py-24 text-center">
+
+        <div
+          style={{
+            maxWidth: '1440px',
+            margin: '0 auto',
+            padding: 'clamp(4rem,8vw,8rem) clamp(1.5rem,5vw,4rem)',
+            textAlign: 'center',
+          }}
+        >
           <svg
-            width="64"
-            height="64"
-            className="text-[#333] mx-auto mb-6"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1"
+            width="64" height="64" viewBox="0 0 24 24" fill="none"
+            stroke="rgba(255,255,255,0.12)" strokeWidth="1"
+            style={{ margin: '0 auto 2rem' }}
           >
             <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
             <line x1="3" y1="6" x2="21" y2="6" />
             <path d="M16 10a4 4 0 01-8 0" />
           </svg>
-          <h2 className="text-white text-2xl font-light tracking-wide mb-3">
-            Your cart is empty
+          <h2
+            style={{
+              color: '#ffffff',
+              fontSize: 'clamp(1.5rem,3vw,2.5rem)',
+              fontWeight: 700,
+              letterSpacing: '-0.02em',
+              textTransform: 'uppercase',
+              marginBottom: '1rem',
+            }}
+          >
+            YOUR CART IS EMPTY
           </h2>
-          <p className="text-[#555] text-sm tracking-wide mb-10">
+          <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '14px', marginBottom: '3rem' }}>
             Discover our exclusive collections and add something special.
           </p>
-          <Link
-            href="/products"
-            className="inline-block bg-[#c9a84c] hover:bg-[#e2c97e] text-black text-[11px] tracking-[0.2em] uppercase font-bold px-10 py-4 transition-colors"
-          >
-            Continue Shopping
+          <Link href="/products" className="btn-bugatti btn-bugatti-white" style={{ borderRadius: 0 }}>
+            CONTINUE SHOPPING
           </Link>
 
           {recommended.length > 0 && (
-            <div className="mt-24 text-left">
-              <h3 className="text-white text-xl tracking-[0.08em] uppercase font-light mb-8">
-                You Might Like
+            <div style={{ marginTop: '6rem', textAlign: 'left' }}>
+              <h3
+                style={{
+                  color: '#ffffff',
+                  fontSize: 'clamp(1.5rem,3vw,2.5rem)',
+                  fontWeight: 700,
+                  letterSpacing: '-0.02em',
+                  textTransform: 'uppercase',
+                  marginBottom: '2rem',
+                }}
+              >
+                YOU MIGHT LIKE
               </h3>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+              <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '1rem' }}>
                 {recommended.map((p) => (
                   <ProductCard key={p.id} product={p} />
                 ))}
@@ -70,198 +105,344 @@ export default function CartPage() {
   const orderTotal = total + shipping;
 
   return (
-    <div className="min-h-screen">
-      <div className="border-b border-[#1a1a1a] bg-[#0d0d0d] py-14">
-        <div className="max-w-[1440px] mx-auto px-6 lg:px-10">
-          <h1 className="text-white text-4xl font-light tracking-tight">
-            Your Cart
+    <div style={{ minHeight: '100vh', background: '#000000' }}>
+      <div
+        style={{
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          padding: 'clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem)',
+        }}
+      >
+        <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
+          <h1
+            style={{
+              color: '#ffffff',
+              fontSize: 'clamp(2.5rem,5vw,5rem)',
+              fontWeight: 700,
+              letterSpacing: '-0.03em',
+              textTransform: 'uppercase',
+              lineHeight: 1,
+              marginBottom: '0.5rem',
+            }}
+          >
+            YOUR CART
           </h1>
-          <p className="text-[#555] text-sm tracking-wide mt-2">
+          <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '13px', letterSpacing: '0.1em' }}>
             {items.length} item{items.length !== 1 ? 's' : ''}
           </p>
         </div>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-10 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div
+        style={{
+          maxWidth: '1440px',
+          margin: '0 auto',
+          padding: '3rem clamp(1.5rem,5vw,4rem)',
+        }}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-3" style={{ gap: '3rem' }}>
           {/* Cart items */}
-          <div className="lg:col-span-2 space-y-0">
-            {/* Header */}
-            <div className="hidden md:grid grid-cols-[1fr_auto_auto_auto] gap-6 pb-4 border-b border-[#1a1a1a] text-[11px] text-[#555] tracking-[0.15em] uppercase">
-              <span>Product</span>
-              <span className="w-24 text-center">Price</span>
-              <span className="w-28 text-center">Quantity</span>
-              <span className="w-20 text-right">Total</span>
+          <div className="lg:col-span-2">
+            {/* Header row */}
+            <div
+              className="hidden md:grid"
+              style={{
+                gridTemplateColumns: '1fr auto auto auto',
+                gap: '1.5rem',
+                paddingBottom: '1rem',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+                fontSize: '11px',
+                color: 'rgba(255,255,255,0.3)',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+              }}
+            >
+              <span>PRODUCT</span>
+              <span style={{ width: '6rem', textAlign: 'center' }}>PRICE</span>
+              <span style={{ width: '7rem', textAlign: 'center' }}>QTY</span>
+              <span style={{ width: '5rem', textAlign: 'right' }}>TOTAL</span>
             </div>
 
             {items.map((item) => (
               <div
                 key={`${item.product.id}-${item.variant}`}
-                className="grid grid-cols-1 md:grid-cols-[1fr_auto_auto_auto] gap-4 md:gap-6 py-8 border-b border-[#1a1a1a] items-center"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr',
+                  gap: '1rem',
+                  padding: '2rem 0',
+                  borderBottom: '1px solid rgba(255,255,255,0.06)',
+                  alignItems: 'center',
+                }}
+                className="md:grid"
               >
-                {/* Product */}
-                <div className="flex items-center gap-5">
-                  <Link
-                    href={`/products/${item.product.slug}`}
-                    className="relative w-20 h-20 shrink-0 overflow-hidden bg-[#111]"
-                  >
-                    <Image
-                      src={item.product.images[0]}
-                      alt={item.product.name}
-                      fill
-                      sizes="80px"
-                      className="object-cover"
-                    />
-                  </Link>
-                  <div>
-                    <p className="text-[10px] text-[#666] tracking-[0.15em] uppercase mb-0.5">
-                      {item.product.vendor}
-                    </p>
+                <div
+                  className="md:grid"
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr auto auto auto',
+                    gap: '1.5rem',
+                    alignItems: 'center',
+                  }}
+                >
+                  {/* Product */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
                     <Link
                       href={`/products/${item.product.slug}`}
-                      className="text-white text-sm tracking-wide hover:text-[#c9a84c] transition-colors"
+                      style={{
+                        position: 'relative',
+                        width: '5rem',
+                        height: '5rem',
+                        flexShrink: 0,
+                        overflow: 'hidden',
+                        background: '#0a0a0a',
+                        display: 'block',
+                      }}
                     >
-                      {item.product.name}
+                      <Image
+                        src={item.product.images[0]}
+                        alt={item.product.name}
+                        fill
+                        sizes="80px"
+                        style={{ objectFit: 'cover' }}
+                      />
                     </Link>
-                    {item.variant && (
-                      <p className="text-[#555] text-xs tracking-wide mt-0.5">
-                        {item.variant}
+                    <div>
+                      <p style={{ fontSize: '10px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '4px' }}>
+                        {item.product.vendor}
                       </p>
-                    )}
-                    <button
-                      onClick={() => removeItem(item.product.id)}
-                      className="text-[10px] text-[#555] hover:text-[#c9a84c] tracking-[0.1em] uppercase transition-colors mt-2 block"
-                    >
-                      Remove
-                    </button>
+                      <Link
+                        href={`/products/${item.product.slug}`}
+                        style={{ color: '#ffffff', fontSize: '13px', letterSpacing: '0.04em', fontWeight: 500, textTransform: 'uppercase', textDecoration: 'none', display: 'block', marginBottom: '4px' }}
+                      >
+                        {item.product.name}
+                      </Link>
+                      {item.variant && (
+                        <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '12px' }}>
+                          {item.variant}
+                        </p>
+                      )}
+                      <button
+                        onClick={() => removeItem(item.product.id)}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: 'rgba(255,255,255,0.3)',
+                          fontSize: '11px',
+                          letterSpacing: '0.1em',
+                          textTransform: 'uppercase',
+                          cursor: 'pointer',
+                          padding: 0,
+                          marginTop: '6px',
+                          transition: 'color 0.2s',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                        onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)')}
+                      >
+                        REMOVE
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                {/* Price */}
-                <div className="w-24 text-center">
-                  <span className="text-[#a0a0a0] text-sm tracking-wide">
-                    {formatPrice(item.product.price, item.product.currency)}
-                  </span>
-                </div>
-
-                {/* Quantity */}
-                <div className="w-28 flex items-center justify-center">
-                  <div className="flex items-center border border-[#2a2a2a]">
-                    <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                      className="w-9 h-9 flex items-center justify-center text-[#a0a0a0] hover:text-white hover:bg-[#161616] transition-colors"
-                    >
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M5 12h14" />
-                      </svg>
-                    </button>
-                    <span className="w-10 h-9 flex items-center justify-center text-white text-sm border-x border-[#2a2a2a]">
-                      {item.quantity}
+                  {/* Price */}
+                  <div style={{ width: '6rem', textAlign: 'center' }}>
+                    <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px' }}>
+                      {formatPrice(item.product.price, item.product.currency)}
                     </span>
-                    <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                      className="w-9 h-9 flex items-center justify-center text-[#a0a0a0] hover:text-white hover:bg-[#161616] transition-colors"
-                    >
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M12 5v14M5 12h14" />
-                      </svg>
-                    </button>
                   </div>
-                </div>
 
-                {/* Total */}
-                <div className="w-20 text-right">
-                  <span className="text-white text-sm font-medium tracking-wide">
-                    {formatPrice(item.product.price * item.quantity, item.product.currency)}
-                  </span>
+                  {/* Qty */}
+                  <div style={{ width: '7rem', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', border: '1px solid rgba(255,255,255,0.1)' }}>
+                      <button
+                        onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
+                        style={{ width: '2.25rem', height: '2.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer' }}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14" /></svg>
+                      </button>
+                      <span style={{ width: '2.5rem', height: '2.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: '14px', borderLeft: '1px solid rgba(255,255,255,0.1)', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
+                        style={{ width: '2.25rem', height: '2.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer' }}
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Total */}
+                  <div style={{ width: '5rem', textAlign: 'right' }}>
+                    <span style={{ color: '#ffffff', fontSize: '14px', fontWeight: 500 }}>
+                      {formatPrice(item.product.price * item.quantity, item.product.currency)}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
 
-            <div className="pt-6 flex justify-between items-center">
+            <div style={{ paddingTop: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Link
                 href="/products"
-                className="text-[#a0a0a0] hover:text-white text-[11px] tracking-[0.2em] uppercase transition-colors flex items-center gap-2"
+                style={{
+                  color: 'rgba(255,255,255,0.4)',
+                  fontSize: '11px',
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}
               >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M19 12H5M12 19l-7-7 7-7" />
                 </svg>
-                Continue Shopping
+                CONTINUE SHOPPING
               </Link>
               <button
                 onClick={clearCart}
-                className="text-[#555] hover:text-[#a0a0a0] text-[11px] tracking-[0.15em] uppercase transition-colors"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'rgba(255,255,255,0.25)',
+                  fontSize: '11px',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.25)')}
               >
-                Clear Cart
+                CLEAR CART
               </button>
             </div>
           </div>
 
           {/* Order summary */}
-          <div className="lg:col-span-1">
-            <div className="bg-[#0d0d0d] border border-[#1a1a1a] p-8 sticky top-28">
-              <h2 className="text-white text-[12px] tracking-[0.25em] uppercase font-semibold mb-8">
-                Order Summary
+          <div>
+            <div
+              style={{
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.06)',
+                padding: '2rem',
+                position: 'sticky',
+                top: 'calc(3rem + 4rem + 1rem)',
+              }}
+            >
+              <h2
+                style={{
+                  color: '#ffffff',
+                  fontSize: '11px',
+                  letterSpacing: '0.25em',
+                  textTransform: 'uppercase',
+                  fontWeight: 600,
+                  marginBottom: '2rem',
+                }}
+              >
+                ORDER SUMMARY
               </h2>
 
-              <div className="space-y-4 mb-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-[#666] text-sm tracking-wide">Subtotal</span>
-                  <span className="text-white text-sm tracking-wide">
-                    {formatPrice(total)}
-                  </span>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px' }}>Subtotal</span>
+                  <span style={{ color: '#ffffff', fontSize: '14px' }}>{formatPrice(total)}</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[#666] text-sm tracking-wide">Shipping</span>
-                  <span className={`text-sm tracking-wide ${shipping === 0 ? 'text-[#c9a84c]' : 'text-white'}`}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: '14px' }}>Shipping</span>
+                  <span style={{ color: shipping === 0 ? '#004BFA' : '#ffffff', fontSize: '14px' }}>
                     {shipping === 0 ? 'Free' : formatPrice(shipping)}
                   </span>
                 </div>
                 {total < 150 && (
-                  <p className="text-[#555] text-xs tracking-wide">
+                  <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: '12px' }}>
                     Add {formatPrice(150 - total)} more for free shipping
                   </p>
                 )}
               </div>
 
-              {/* Promo code */}
-              <div className="mb-6">
-                <div className="flex gap-0">
+              {/* Promo */}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex' }}>
                   <input
                     type="text"
-                    placeholder="Promo code"
-                    className="flex-1 bg-[#111] border border-[#2a2a2a] border-r-0 px-4 py-3 text-sm text-white placeholder:text-[#444] outline-none focus:border-[#c9a84c] transition-colors"
+                    placeholder="PROMO CODE"
+                    style={{
+                      flex: 1,
+                      background: 'rgba(255,255,255,0.04)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRight: 'none',
+                      color: '#ffffff',
+                      fontSize: '12px',
+                      letterSpacing: '0.1em',
+                      padding: '0.75rem 1rem',
+                      outline: 'none',
+                    }}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = '#004BFA')}
+                    onBlur={(e) => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)')}
                   />
-                  <button className="bg-[#222] hover:bg-[#333] border border-[#2a2a2a] text-[#a0a0a0] hover:text-white text-xs tracking-[0.15em] uppercase px-4 transition-colors">
-                    Apply
+                  <button
+                    style={{
+                      background: 'rgba(255,255,255,0.06)',
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      color: 'rgba(255,255,255,0.5)',
+                      fontSize: '11px',
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                      padding: '0.75rem 1rem',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      transition: 'background 0.2s',
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.1)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
+                  >
+                    APPLY
                   </button>
                 </div>
               </div>
 
-              <div className="border-t border-[#1a1a1a] pt-6 mb-8">
-                <div className="flex justify-between items-center">
-                  <span className="text-white text-sm tracking-[0.1em] uppercase font-medium">
-                    Total
-                  </span>
-                  <span className="text-white text-xl font-medium tracking-wide">
+              <div
+                style={{
+                  borderTop: '1px solid rgba(255,255,255,0.06)',
+                  paddingTop: '1.5rem',
+                  marginBottom: '2rem',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ color: '#ffffff', fontSize: '13px', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 500 }}>TOTAL</span>
+                  <span style={{ color: '#ffffff', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
                     {formatPrice(orderTotal)}
                   </span>
                 </div>
-                <p className="text-[#555] text-xs tracking-wide mt-1 text-right">
+                <p style={{ color: 'rgba(255,255,255,0.2)', fontSize: '11px', marginTop: '4px', textAlign: 'right' }}>
                   Including taxes
                 </p>
               </div>
 
-              <button className="w-full bg-[#c9a84c] hover:bg-[#e2c97e] text-black text-[11px] tracking-[0.2em] uppercase font-bold py-4 transition-colors">
-                Proceed to Checkout
+              <button
+                className="btn-bugatti btn-bugatti-white"
+                style={{ width: '100%', borderRadius: 0, justifyContent: 'center' }}
+              >
+                PROCEED TO CHECKOUT
               </button>
 
               {/* Payment icons */}
-              <div className="mt-5 flex items-center justify-center gap-2 flex-wrap">
+              <div style={{ marginTop: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                 {['VISA', 'MC', 'AMEX', 'PAYPAL', 'APPLE PAY'].map((m) => (
                   <span
                     key={m}
-                    className="text-[9px] text-[#444] border border-[#1e1e1e] px-1.5 py-0.5 rounded tracking-wider"
+                    style={{
+                      fontSize: '9px',
+                      color: 'rgba(255,255,255,0.3)',
+                      border: '1px solid rgba(255,255,255,0.12)',
+                      padding: '3px 6px',
+                      letterSpacing: '0.05em',
+                    }}
                   >
                     {m}
                   </span>

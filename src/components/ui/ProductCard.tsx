@@ -17,10 +17,9 @@ export default function ProductCard({ product, className = '' }: ProductCardProp
   const [added, setAdded] = useState(false);
   const [hovered, setHovered] = useState(false);
 
-  const discount =
-    product.originalPrice
-      ? calcDiscount(product.originalPrice, product.price)
-      : null;
+  const discount = product.originalPrice
+    ? calcDiscount(product.originalPrice, product.price)
+    : null;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -37,35 +36,67 @@ export default function ProductCard({ product, className = '' }: ProductCardProp
       onMouseLeave={() => setHovered(false)}
     >
       {/* Image */}
-      <div className="relative overflow-hidden bg-[#111] aspect-square mb-4">
+      <div
+        className="relative overflow-hidden aspect-square mb-3"
+        style={{ background: '#0a0a0a', borderRadius: 'clamp(0.625rem,1.053vw,1.25rem)' }}
+      >
         <Image
           src={product.images[hovered && product.images[1] ? 1 : 0]}
           alt={product.name}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 50vw, 25vw"
           className="object-cover product-card-img"
         />
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {product.isNew && (
-            <span className="bg-white text-black text-[10px] tracking-[0.15em] uppercase font-bold px-2 py-0.5">
-              New
+            <span
+              style={{
+                background: '#ffffff',
+                color: '#000000',
+                fontSize: '10px',
+                fontWeight: 700,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                padding: '2px 8px',
+              }}
+            >
+              NEW
             </span>
           )}
           {discount && (
-            <span className="bg-[#c9a84c] text-black text-[10px] tracking-[0.1em] uppercase font-bold px-2 py-0.5">
-              Save {discount}%
+            <span
+              style={{
+                background: '#E11D48',
+                color: '#ffffff',
+                fontSize: '10px',
+                fontWeight: 700,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                padding: '2px 8px',
+              }}
+            >
+              -{discount}%
             </span>
           )}
           {!product.inStock && (
-            <span className="bg-[#222] text-[#666] text-[10px] tracking-[0.1em] uppercase px-2 py-0.5">
-              Sold Out
+            <span
+              style={{
+                background: 'rgba(255,255,255,0.1)',
+                color: '#a0a0a0',
+                fontSize: '10px',
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                padding: '2px 8px',
+              }}
+            >
+              SOLD OUT
             </span>
           )}
         </div>
 
-        {/* Quick add */}
+        {/* Quick add overlay */}
         <div
           className={`absolute bottom-0 inset-x-0 transition-transform duration-300 ${
             hovered ? 'translate-y-0' : 'translate-y-full'
@@ -74,27 +105,61 @@ export default function ProductCard({ product, className = '' }: ProductCardProp
           <button
             onClick={handleAddToCart}
             disabled={!product.inStock}
-            className="w-full bg-[#c9a84c] hover:bg-[#e2c97e] disabled:bg-[#333] disabled:text-[#555] text-black text-[11px] tracking-[0.18em] uppercase font-bold py-3.5 transition-colors"
+            style={{
+              width: '100%',
+              background: product.inStock ? '#004BFA' : 'rgba(255,255,255,0.1)',
+              color: product.inStock ? '#ffffff' : '#a0a0a0',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              padding: '0.875rem',
+              border: 'none',
+              cursor: product.inStock ? 'pointer' : 'not-allowed',
+              transition: 'background 0.2s',
+            }}
           >
-            {added ? '✓ Added' : product.inStock ? 'Add to Cart' : 'Sold Out'}
+            {added ? '✓ ADDED' : product.inStock ? 'ADD TO CART' : 'SOLD OUT'}
           </button>
         </div>
       </div>
 
       {/* Info */}
-      <div className="space-y-1 px-0.5">
-        <p className="text-[11px] text-[#666] tracking-[0.12em] uppercase">
+      <div style={{ padding: '0 2px' }}>
+        <p
+          style={{
+            fontSize: '11px',
+            color: 'rgba(255,255,255,0.4)',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            marginBottom: '4px',
+          }}
+        >
           {product.vendor}
         </p>
-        <h3 className="text-white text-sm leading-snug group-hover:text-[#c9a84c] transition-colors tracking-wide line-clamp-2">
+        <h3
+          style={{
+            fontSize: '13px',
+            color: '#ffffff',
+            fontWeight: 500,
+            lineHeight: 1.4,
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+            marginBottom: '6px',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
           {product.name}
         </h3>
-        <div className="flex items-center gap-2 pt-0.5">
-          <span className="text-white font-medium text-sm tracking-wide">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ fontSize: '14px', color: '#004BFA', fontWeight: 500 }}>
             {formatPrice(product.price, product.currency)}
           </span>
           {product.originalPrice && (
-            <span className="text-[#555] text-sm line-through tracking-wide">
+            <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.3)', textDecoration: 'line-through' }}>
               {formatPrice(product.originalPrice, product.currency)}
             </span>
           )}

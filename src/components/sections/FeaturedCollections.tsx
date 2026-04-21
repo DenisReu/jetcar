@@ -137,9 +137,8 @@ export default function FeaturedCollections() {
         <h2
           className="uppercase"
           style={{
-            fontFamily: 'Inter, sans-serif',
-            fontWeight: 400,
-            letterSpacing: '-0.02em',
+            fontWeight: 700,
+            letterSpacing: '-0.03em',
             fontSize: 'clamp(2rem, 3vw, 3.5rem)',
             color: '#ffffff',
             marginBottom: '2.5rem',

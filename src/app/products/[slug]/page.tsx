@@ -44,68 +44,85 @@ export default function ProductPage({ params }: Props) {
   };
 
   return (
-    <div className="min-h-screen">
+    <div style={{ minHeight: '100vh', background: '#000000' }}>
       {/* Breadcrumb */}
-      <div className="border-b border-[#1a1a1a] bg-[#0d0d0d] py-4 px-6 lg:px-10">
-        <div className="max-w-[1440px] mx-auto flex items-center gap-2 text-xs text-[#555] tracking-wide">
-          <Link href="/" className="hover:text-[#a0a0a0] transition-colors">Home</Link>
+      <div
+        style={{
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          padding: '1rem clamp(1.5rem,5vw,4rem)',
+        }}
+      >
+        <div style={{ maxWidth: '1440px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em' }}>
+          <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>HOME</Link>
           <span>/</span>
-          <Link href="/products" className="hover:text-[#a0a0a0] transition-colors">Products</Link>
+          <Link href="/products" style={{ color: 'inherit', textDecoration: 'none' }}>PRODUCTS</Link>
           <span>/</span>
-          <Link
-            href={`/collections/${product.category}`}
-            className="hover:text-[#a0a0a0] transition-colors capitalize"
-          >
-            {product.category.replace('-', ' ')}
+          <Link href={`/collections/${product.category}`} style={{ color: 'inherit', textDecoration: 'none', textTransform: 'uppercase' }}>
+            {product.category.replace(/-/g, ' ')}
           </Link>
           <span>/</span>
-          <span className="text-[#a0a0a0]">{product.name}</span>
+          <span style={{ color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase' }}>{product.name}</span>
         </div>
       </div>
 
-      <div className="max-w-[1440px] mx-auto px-6 lg:px-10 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20">
+      <div
+        style={{
+          maxWidth: '1440px',
+          margin: '0 auto',
+          padding: 'clamp(2rem,4vw,4rem) clamp(1.5rem,5vw,4rem)',
+        }}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: 'clamp(2rem,5vw,5rem)' }}>
           {/* Images */}
-          <div className="space-y-4">
-            <div className="relative aspect-square overflow-hidden bg-[#111]">
+          <div>
+            <div
+              style={{
+                position: 'relative',
+                aspectRatio: '1 / 1',
+                overflow: 'hidden',
+                background: '#0a0a0a',
+              }}
+            >
               <Image
                 src={product.images[selectedImage]}
                 alt={product.name}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
+                style={{ objectFit: 'cover' }}
                 priority
               />
-              {product.isNew && (
-                <span className="absolute top-4 left-4 bg-white text-black text-[10px] tracking-[0.15em] uppercase font-bold px-3 py-1">
-                  New
-                </span>
-              )}
-              {discount && (
-                <span className="absolute top-4 right-4 bg-[#c9a84c] text-black text-[11px] tracking-[0.1em] uppercase font-bold px-3 py-1">
-                  Save {discount}%
-                </span>
-              )}
+              {/* Badges */}
+              <div style={{ position: 'absolute', top: '1rem', left: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {product.isNew && (
+                  <span style={{ background: '#ffffff', color: '#000000', fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '3px 10px' }}>
+                    NEW
+                  </span>
+                )}
+                {discount && (
+                  <span style={{ background: '#E11D48', color: '#ffffff', fontSize: '10px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '3px 10px' }}>
+                    SAVE {discount}%
+                  </span>
+                )}
+              </div>
             </div>
             {product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-3">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.75rem', marginTop: '0.75rem' }}>
                 {product.images.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImage(i)}
-                    className={`relative aspect-square overflow-hidden bg-[#111] border-2 transition-colors ${
-                      selectedImage === i
-                        ? 'border-[#c9a84c]'
-                        : 'border-transparent hover:border-[#333]'
-                    }`}
+                    style={{
+                      position: 'relative',
+                      aspectRatio: '1 / 1',
+                      overflow: 'hidden',
+                      background: '#0a0a0a',
+                      border: selectedImage === i ? '2px solid #004BFA' : '2px solid transparent',
+                      cursor: 'pointer',
+                      padding: 0,
+                      transition: 'border-color 0.2s',
+                    }}
                   >
-                    <Image
-                      src={img}
-                      alt={`${product.name} view ${i + 1}`}
-                      fill
-                      sizes="25vw"
-                      className="object-cover"
-                    />
+                    <Image src={img} alt={`${product.name} view ${i + 1}`} fill sizes="25vw" style={{ objectFit: 'cover' }} />
                   </button>
                 ))}
               </div>
@@ -113,51 +130,79 @@ export default function ProductPage({ params }: Props) {
           </div>
 
           {/* Details */}
-          <div className="lg:pt-4">
-            <p className="text-[11px] text-[#c9a84c] tracking-[0.25em] uppercase mb-3">
+          <div style={{ paddingTop: '0.5rem' }}>
+            <p
+              style={{
+                fontSize: '11px',
+                color: 'rgba(255,255,255,0.35)',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                marginBottom: '0.75rem',
+              }}
+            >
               {product.vendor}
             </p>
-            <h1 className="text-white text-3xl md:text-4xl font-light tracking-tight leading-tight mb-5">
+            <h1
+              style={{
+                color: '#ffffff',
+                fontSize: 'clamp(1.5rem,3vw,2.5rem)',
+                fontWeight: 700,
+                letterSpacing: '-0.03em',
+                textTransform: 'uppercase',
+                lineHeight: 1.1,
+                marginBottom: '1.5rem',
+              }}
+            >
               {product.name}
             </h1>
 
             {/* Price */}
-            <div className="flex items-center gap-4 mb-8">
-              <span className="text-white text-2xl font-medium tracking-wide">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+              <span style={{ color: '#004BFA', fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em' }}>
                 {formatPrice(product.price, product.currency)}
               </span>
               {product.originalPrice && (
-                <span className="text-[#555] text-lg line-through tracking-wide">
+                <span style={{ color: 'rgba(255,255,255,0.25)', fontSize: '1.25rem', textDecoration: 'line-through' }}>
                   {formatPrice(product.originalPrice, product.currency)}
                 </span>
               )}
               {discount && (
-                <span className="text-[#c9a84c] text-sm font-medium">
-                  Save {discount}%
+                <span style={{ background: '#E11D48', color: '#ffffff', fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '3px 10px' }}>
+                  -{discount}%
                 </span>
               )}
             </div>
 
             {/* Variants */}
             {product.variants && product.variants.length > 0 && (
-              <div className="mb-8">
-                <p className="text-[11px] text-[#666] tracking-[0.2em] uppercase mb-3">
+              <div style={{ marginBottom: '2rem' }}>
+                <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
                   {product.variants[0].name}:{' '}
-                  <span className="text-white">{selectedVariant}</span>
+                  <span style={{ color: '#ffffff' }}>{selectedVariant}</span>
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                   {product.variants.map((v) => (
                     <button
                       key={v.id}
                       onClick={() => setSelectedVariant(v.value)}
                       disabled={!v.inStock}
-                      className={`px-4 py-2 text-sm tracking-wide border transition-colors ${
-                        selectedVariant === v.value
-                          ? 'border-[#c9a84c] bg-[#c9a84c]/10 text-white'
-                          : v.inStock
-                          ? 'border-[#2a2a2a] text-[#a0a0a0] hover:border-[#444]'
-                          : 'border-[#1a1a1a] text-[#333] cursor-not-allowed line-through'
-                      }`}
+                      style={{
+                        padding: '0.5rem 1.25rem',
+                        fontSize: '12px',
+                        fontWeight: 500,
+                        letterSpacing: '0.08em',
+                        textTransform: 'uppercase',
+                        border: selectedVariant === v.value
+                          ? '1.5px solid #004BFA'
+                          : '1.5px solid rgba(255,255,255,0.15)',
+                        background: selectedVariant === v.value
+                          ? 'rgba(0,75,250,0.1)'
+                          : 'transparent',
+                        color: v.inStock ? '#ffffff' : 'rgba(255,255,255,0.2)',
+                        cursor: v.inStock ? 'pointer' : 'not-allowed',
+                        textDecoration: v.inStock ? 'none' : 'line-through',
+                        transition: 'all 0.2s',
+                      }}
                     >
                       {v.value}
                     </button>
@@ -167,49 +212,61 @@ export default function ProductPage({ params }: Props) {
             )}
 
             {/* Quantity */}
-            <div className="mb-8">
-              <p className="text-[11px] text-[#666] tracking-[0.2em] uppercase mb-3">
-                Quantity
+            <div style={{ marginBottom: '2rem' }}>
+              <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.35)', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: '0.75rem' }}>
+                QUANTITY
               </p>
-              <div className="flex items-center gap-0 w-fit border border-[#2a2a2a]">
+              <div style={{ display: 'inline-flex', alignItems: 'center', border: '1.5px solid rgba(255,255,255,0.15)' }}>
                 <button
                   onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="w-11 h-11 flex items-center justify-center text-[#a0a0a0] hover:text-white hover:bg-[#161616] transition-colors"
+                  style={{ width: '2.75rem', height: '2.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer' }}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M5 12h14" />
-                  </svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14" /></svg>
                 </button>
-                <span className="w-12 h-11 flex items-center justify-center text-white text-sm border-x border-[#2a2a2a]">
+                <span style={{ width: '3rem', height: '2.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ffffff', fontSize: '14px', borderLeft: '1px solid rgba(255,255,255,0.1)', borderRight: '1px solid rgba(255,255,255,0.1)' }}>
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity((q) => q + 1)}
-                  className="w-11 h-11 flex items-center justify-center text-[#a0a0a0] hover:text-white hover:bg-[#161616] transition-colors"
+                  style={{ width: '2.75rem', height: '2.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer' }}
                 >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M12 5v14M5 12h14" />
-                  </svg>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14" /></svg>
                 </button>
               </div>
             </div>
 
             {/* Add to cart */}
-            <div className="flex gap-4 mb-10">
+            <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '2.5rem' }}>
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className="flex-1 bg-[#c9a84c] hover:bg-[#e2c97e] disabled:bg-[#222] disabled:text-[#555] text-black text-[11px] tracking-[0.2em] uppercase font-bold py-4 transition-colors"
+                className="btn-bugatti"
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  background: product.inStock ? '#004BFA' : 'rgba(255,255,255,0.06)',
+                  color: product.inStock ? '#ffffff' : 'rgba(255,255,255,0.3)',
+                  borderColor: product.inStock ? '#004BFA' : 'rgba(255,255,255,0.06)',
+                  cursor: product.inStock ? 'pointer' : 'not-allowed',
+                  borderRadius: 0,
+                }}
               >
-                {added
-                  ? '✓ Added to Cart'
-                  : product.inStock
-                  ? 'Add to Cart'
-                  : 'Sold Out'}
+                {added ? '✓ ADDED TO CART' : product.inStock ? 'ADD TO CART' : 'SOLD OUT'}
               </button>
               <Link
                 href="/cart"
-                className="border border-[#2a2a2a] hover:border-[#555] text-[#a0a0a0] hover:text-white px-5 flex items-center justify-center transition-colors"
+                style={{
+                  border: '1.5px solid rgba(255,255,255,0.15)',
+                  color: 'rgba(255,255,255,0.5)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '0 1.25rem',
+                  textDecoration: 'none',
+                  transition: 'border-color 0.2s, color 0.2s',
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#ffffff'; e.currentTarget.style.color = '#ffffff'; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; }}
                 aria-label="View cart"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -221,35 +278,31 @@ export default function ProductPage({ params }: Props) {
             </div>
 
             {/* Description */}
-            <div className="border-t border-[#1a1a1a] pt-8">
-              <h3 className="text-white text-[11px] tracking-[0.2em] uppercase mb-4">
-                Product Details
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2rem' }}>
+              <h3 style={{ color: '#ffffff', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, marginBottom: '1rem' }}>
+                PRODUCT DETAILS
               </h3>
-              <p className="text-[#a0a0a0] text-sm leading-relaxed tracking-wide">
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px', lineHeight: 1.7, letterSpacing: '0.02em' }}>
                 {product.description}
               </p>
             </div>
 
             {/* Meta */}
-            <div className="mt-8 space-y-3 border-t border-[#1a1a1a] pt-8">
+            <div style={{ marginTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {[
-                { label: 'Category', value: product.category.replace('-', ' ') },
-                { label: 'Vendor', value: product.vendor },
+                { label: 'CATEGORY', value: product.category.replace(/-/g, ' ').toUpperCase() },
+                { label: 'VENDOR', value: product.vendor },
                 {
-                  label: 'Availability',
-                  value: product.inStock ? 'In Stock' : 'Out of Stock',
-                  gold: product.inStock,
+                  label: 'AVAILABILITY',
+                  value: product.inStock ? 'IN STOCK' : 'OUT OF STOCK',
+                  accent: product.inStock,
                 },
               ].map((item) => (
-                <div key={item.label} className="flex items-center gap-4">
-                  <span className="text-[11px] text-[#555] tracking-[0.15em] uppercase w-24">
+                <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                  <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)', letterSpacing: '0.15em', textTransform: 'uppercase', minWidth: '6rem' }}>
                     {item.label}
                   </span>
-                  <span
-                    className={`text-sm tracking-wide capitalize ${
-                      item.gold ? 'text-[#c9a84c]' : 'text-[#a0a0a0]'
-                    }`}
-                  >
+                  <span style={{ fontSize: '13px', color: item.accent ? '#004BFA' : 'rgba(255,255,255,0.5)', letterSpacing: '0.05em' }}>
                     {item.value}
                   </span>
                 </div>
@@ -257,21 +310,22 @@ export default function ProductPage({ params }: Props) {
             </div>
 
             {/* Shipping note */}
-            <div className="mt-8 p-4 bg-[#0d0d0d] border border-[#1a1a1a] flex items-start gap-3">
-              <svg
-                width="16"
-                height="16"
-                className="text-[#c9a84c] shrink-0 mt-0.5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-              >
+            <div
+              style={{
+                marginTop: '2rem',
+                padding: '1rem 1.25rem',
+                background: 'rgba(0,75,250,0.06)',
+                border: '1px solid rgba(0,75,250,0.2)',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '0.75rem',
+              }}
+            >
+              <svg width="16" height="16" style={{ color: '#004BFA', flexShrink: 0, marginTop: '2px' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8" />
               </svg>
-              <p className="text-[#666] text-xs leading-relaxed tracking-wide">
-                Free delivery on orders over £150 / €150. Orders dispatched within
-                1–3 business days.
+              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '12px', lineHeight: 1.6 }}>
+                Free delivery on orders over £150. Dispatched within 1–3 business days.
               </p>
             </div>
           </div>
@@ -279,22 +333,43 @@ export default function ProductPage({ params }: Props) {
 
         {/* Related products */}
         {related.length > 0 && (
-          <div className="mt-24">
-            <div className="flex items-end justify-between mb-10">
-              <h2 className="text-white text-2xl tracking-[0.08em] uppercase font-light">
-                You May Also Like
+          <div style={{ marginTop: 'clamp(4rem,8vw,8rem)' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '2rem' }}>
+              <h2
+                style={{
+                  color: '#ffffff',
+                  fontSize: 'clamp(1.5rem,3vw,2.5rem)',
+                  fontWeight: 700,
+                  letterSpacing: '-0.02em',
+                  textTransform: 'uppercase',
+                }}
+              >
+                YOU MAY ALSO LIKE
               </h2>
               <Link
                 href={`/collections/${product.category}`}
-                className="text-[#c9a84c] hover:text-[#e2c97e] text-[11px] tracking-[0.2em] uppercase font-medium transition-colors hidden sm:flex items-center gap-2"
+                style={{
+                  color: 'rgba(255,255,255,0.4)',
+                  fontSize: '11px',
+                  letterSpacing: '0.18em',
+                  textTransform: 'uppercase',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  textDecoration: 'none',
+                  transition: 'color 0.2s',
+                }}
+                className="hidden sm:flex"
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#ffffff')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'rgba(255,255,255,0.4)')}
               >
-                View Collection
+                VIEW COLLECTION
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </Link>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: '1rem' }}>
               {related.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}
