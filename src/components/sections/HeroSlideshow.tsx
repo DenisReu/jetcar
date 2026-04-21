@@ -22,7 +22,7 @@ const slides: Slide[] = [
   {
     image: '/images/slideshow/slide-2.webp',
     heading: 'CELEBRATE THE START OF SPRING',
-    cta: { label: 'Bugatti Carbon Champagne', href: '/collections/champagne' },
+    cta: { label: 'Shop Now', href: '/collections/champagne' },
   },
   {
     image: '/images/slideshow/slide-3.jpg',
@@ -45,179 +45,244 @@ export default function HeroSlideshow() {
     setCurrent(index);
   }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, INTERVAL_MS);
-    return () => clearInterval(timer);
+  const prev = useCallback(() => {
+    setCurrent((p) => (p - 1 + slides.length) % slides.length);
   }, []);
+
+  const next = useCallback(() => {
+    setCurrent((p) => (p + 1) % slides.length);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(next, INTERVAL_MS);
+    return () => clearInterval(timer);
+  }, [next]);
+
+  const slide = slides[current];
 
   return (
     <>
       <style>{`
-        @keyframes zoomOut {
-          from { transform: scale(1.07); }
+        @keyframes heroZoom {
+          from { transform: scale(1.06); }
           to   { transform: scale(1.0);  }
         }
-        .hero-slide-img-active {
-          animation: zoomOut 6s linear forwards;
+        .hero-img-active {
+          animation: heroZoom 6s linear forwards;
         }
       `}</style>
 
-      <section
+      {/* Outer wrapper: gives the left/right black margins */}
+      <div
         style={{
-          width: '100%',
-          height: '100svh',
-          overflow: 'hidden',
-          position: 'relative',
+          maxWidth: '1440px',
+          margin: '0 auto',
+          paddingLeft: '2.5rem',
+          paddingRight: '2.5rem',
         }}
-        aria-label="Hero slideshow"
       >
-        {/* Slides */}
-        {slides.map((slide, i) => {
-          const isActive = i === current;
-          return (
-            <div
-              key={i}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                opacity: isActive ? 1 : 0,
-                transition: 'opacity 0.7s ease',
-                zIndex: isActive ? 1 : 0,
-              }}
-              aria-hidden={!isActive}
-            >
-              {/* Background image */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  overflow: 'hidden',
-                }}
-              >
-                <Image
-                  src={slide.image}
-                  alt={slide.heading}
-                  fill
-                  priority={i === 0}
-                  sizes="100vw"
-                  style={{
-                    objectFit: 'cover',
-                    width: '100%',
-                    height: '100%',
-                    position: 'absolute',
-                    inset: '0',
-                  }}
-                  className={isActive ? 'hero-slide-img-active' : undefined}
-                />
-              </div>
-
-              {/* Dark overlay */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'rgba(0,0,0,0.20)',
-                  zIndex: 1,
-                }}
-              />
-
-              {/* Text content overlay */}
-              <div
-                style={{
-                  position: 'absolute',
-                  bottom: 'clamp(2rem, 5vw, 3rem)',
-                  left: 'clamp(1.5rem, 5vw, 4rem)',
-                  zIndex: 2,
-                }}
-              >
-                <h2
-                  style={{
-                    fontSize: 'clamp(2.5rem, 4vw, 4rem)',
-                    fontWeight: 400,
-                    color: '#ffffff',
-                    letterSpacing: '-0.02em',
-                    lineHeight: 1.05,
-                    textTransform: 'uppercase',
-                    margin: '0 0 1.5rem 0',
-                    maxWidth: '20ch',
-                  }}
-                >
-                  {slide.heading}
-                </h2>
-
-                <Link
-                  href={slide.cta.href}
-                  style={{
-                    display: 'inline-block',
-                    background: '#ffffff',
-                    color: '#000000',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    fontSize: '0.75rem',
-                    fontWeight: 500,
-                    padding: '0.875rem 2.5rem',
-                    border: '1.5px solid white',
-                    textDecoration: 'none',
-                    transition: 'background 0.25s ease, color 0.25s ease',
-                    whiteSpace: 'nowrap',
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.background = 'transparent';
-                    (e.currentTarget as HTMLAnchorElement).style.color = '#ffffff';
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.background = '#ffffff';
-                    (e.currentTarget as HTMLAnchorElement).style.color = '#000000';
-                  }}
-                >
-                  {slide.cta.label}
-                </Link>
-              </div>
-            </div>
-          );
-        })}
-
-        {/* Navigation dots */}
-        <div
+        <section
           style={{
-            position: 'absolute',
-            bottom: '1.5rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 3,
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
+            position: 'relative',
+            width: '100%',
+            height: 'clamp(480px, 82vh, 860px)',
+            borderRadius: '0.75rem',
+            overflow: 'hidden',
+            backgroundColor: '#111',
           }}
-          role="tablist"
-          aria-label="Slideshow navigation"
+          aria-label="Hero slideshow"
         >
-          {slides.map((_, i) => {
+          {/* Slides */}
+          {slides.map((s, i) => {
             const isActive = i === current;
             return (
-              <button
+              <div
                 key={i}
-                role="tab"
-                aria-selected={isActive}
-                aria-label={`Go to slide ${i + 1}`}
-                onClick={() => goTo(i)}
                 style={{
-                  width: isActive ? '2rem' : '0.5rem',
-                  height: '0.25rem',
-                  background: isActive ? '#ffffff' : 'rgba(255,255,255,0.4)',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  transition: 'width 0.4s ease, background 0.4s ease',
-                  flexShrink: 0,
+                  position: 'absolute',
+                  inset: 0,
+                  opacity: isActive ? 1 : 0,
+                  transition: 'opacity 0.8s ease',
+                  zIndex: isActive ? 1 : 0,
                 }}
-              />
+                aria-hidden={!isActive}
+              >
+                <Image
+                  src={s.image}
+                  alt={s.heading}
+                  fill
+                  priority={i === 0}
+                  sizes="(max-width: 1440px) 100vw, 1440px"
+                  style={{ objectFit: 'cover' }}
+                  className={isActive ? 'hero-img-active' : undefined}
+                />
+                {/* Bottom gradient for text legibility */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 45%, transparent 70%)',
+                  }}
+                />
+              </div>
             );
           })}
-        </div>
-      </section>
+
+          {/* Bottom-left: heading */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '4rem',
+              left: '2.5rem',
+              zIndex: 2,
+              maxWidth: '14ch',
+            }}
+          >
+            <h1
+              style={{
+                fontSize: 'clamp(2.5rem, 4.5vw, 5.5rem)',
+                fontWeight: 700,
+                color: '#ffffff',
+                letterSpacing: '-0.03em',
+                lineHeight: 1.0,
+                textTransform: 'uppercase',
+                margin: 0,
+              }}
+            >
+              {slide.heading}
+            </h1>
+          </div>
+
+          {/* Bottom-right: CTA pill button */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '4.25rem',
+              right: '2.5rem',
+              zIndex: 2,
+            }}
+          >
+            <Link
+              href={slide.cta.href}
+              style={{
+                display: 'inline-block',
+                background: '#ffffff',
+                color: '#000000',
+                fontSize: '0.8125rem',
+                fontWeight: 500,
+                letterSpacing: '0.04em',
+                padding: '0.75rem 2rem',
+                borderRadius: '9999px',
+                textDecoration: 'none',
+                whiteSpace: 'nowrap',
+                transition: 'background 0.25s ease, color 0.25s ease',
+              }}
+              onMouseEnter={(e) => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = 'rgba(255,255,255,0.85)';
+              }}
+              onMouseLeave={(e) => {
+                const el = e.currentTarget as HTMLAnchorElement;
+                el.style.background = '#ffffff';
+              }}
+            >
+              {slide.cta.label}
+            </Link>
+          </div>
+
+          {/* Bottom navigation row: arrows + dots */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '1.25rem',
+              left: 0,
+              right: 0,
+              zIndex: 3,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingLeft: '2rem',
+              paddingRight: '2rem',
+            }}
+          >
+            {/* Left arrow */}
+            <button
+              onClick={prev}
+              aria-label="Previous slide"
+              style={{
+                width: '2.25rem',
+                height: '2.25rem',
+                borderRadius: '50%',
+                border: '1px solid rgba(255,255,255,0.35)',
+                background: 'rgba(0,0,0,0.25)',
+                color: '#ffffff',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backdropFilter: 'blur(4px)',
+                flexShrink: 0,
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+
+            {/* Dots */}
+            <div
+              style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              role="tablist"
+              aria-label="Slides"
+            >
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  role="tab"
+                  aria-selected={i === current}
+                  aria-label={`Slide ${i + 1}`}
+                  onClick={() => goTo(i)}
+                  style={{
+                    width: '0.5rem',
+                    height: '0.5rem',
+                    borderRadius: '50%',
+                    background: i === current ? '#ffffff' : 'rgba(255,255,255,0.35)',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    transition: 'background 0.3s ease',
+                    flexShrink: 0,
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Right arrow */}
+            <button
+              onClick={next}
+              aria-label="Next slide"
+              style={{
+                width: '2.25rem',
+                height: '2.25rem',
+                borderRadius: '50%',
+                border: '1px solid rgba(255,255,255,0.35)',
+                background: 'rgba(0,0,0,0.25)',
+                color: '#ffffff',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backdropFilter: 'blur(4px)',
+                flexShrink: 0,
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+        </section>
+      </div>
     </>
   );
 }
